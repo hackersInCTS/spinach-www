@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+		<title>Training App</title>
+		<link rel="stylesheet" href="css/master.css" type="text/css" media="screen" />
+		
+		<!--<script src="phonegap.js" type="text/javascript" charset="utf-8"></script>-->
+		
+		<script src="js/xui.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/lawnchair/adaptors/LawnchairAdaptorHelpers.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/lawnchair/adaptors/DOMStorageAdaptor.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/lawnchair/adaptors/WebkitSQLiteAdaptor.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/lawnchair/Lawnchair.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/dsl.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="js/app.js" type="text/javascript" charset="utf-8"></script>
+
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6e4BfRnKU_yRj1uodiOlnFAywSrEdIss&sensor=true"></script>
+        <script src="../psjs/cordova-2.0.0.js"></script>
+        <script src="js/my.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+    </head>
+	<body>
+
+    <!-- Start of index page -->
+<div data-role="page" id="index">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            POCs
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div data-role="collapsible-set" data-theme="d" data-content-theme="d">
+            <div data-role="collapsible" data-collapsed="true">
+                <h3>
+                    Camera
+                </h3>
+                <a data-role="button" data-transition="none" data-theme="b" href="#" data-icon="star"
+                   data-iconpos="left">
+                    Capture Photo
+                </a>
+                <a data-role="button" data-transition="none" data-theme="e" href="#" data-icon="star"
+                   data-iconpos="left">
+                    Capture Video
+                </a>
+                <a data-role="button" data-transition="none" data-theme="c" href="#" data-icon="search"
+                   data-iconpos="left">
+                    Photos &amp; Videos
+                </a>
+            </div>
+            <div data-role="collapsible" data-collapsed="true">
+                <h3>
+                    Geo Location
+                </h3>
+                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#dialog"
+                   data-rel="dialog" data-iconpos="right" id="PlotSpecificLocationButton">
+                    Plot specified location
+                </a>
+                <a id="CurrentLocation" data-role="button" data-transition="none" data-theme="e" data-icon="info"
+                   data-iconpos="right">
+                    Plot current location
+                </a>
+                 <a id="GetSpeedAndLocation" data-role="button" data-transition="none" data-theme="e" data-icon="info"
+                   data-iconpos="right">
+                    Get Speed And Location
+                </a>
+            </div>
+            <div data-role="collapsible" data-collapsed="true">
+                <h3>
+                    Accelerometer
+                </h3>
+                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#watchacceleration"
+                   data-rel="dialog" data-iconpos="right" id="openWatchAcceleration">
+                    Watch Acceleration
+                </a>
+                <a id="GetAcceleration" data-role="button" data-transition="none" data-theme="e" data-icon="info"
+                   data-iconpos="right">
+                    Get Acceleration
+                </a>
+            </div>
+        </div>
+        <div>
+            <a href="https://github.com/hackersInCTS/hackersStash" target="_blank" data-transition="flip">
+                Fork us on Github
+            </a>
+        </div>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>
+            © Hackers in CTS
+        </h5>
+    </div>
+</div>
+<!-- /page -->
+
+<!-- Start of map page -->
+<div data-role="page" id="map">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            Map
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div>
+            <input id="CurrentLocationFlag" type="hidden">
+            <img id="mapPlotImg"/>
+            <h4 id="LocationMarker"></h4>
+        </div>
+        <div>
+            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
+               data-icon="back" data-iconpos="left">
+                Back
+            </a>
+        </div>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>
+            © Hackers in CTS
+        </h5>
+    </div>
+</div>
+<!-- /page -->
+
+<!-- Start of map page -->
+<div data-role="page" id="dialog">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            Address
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div data-role="fieldcontain" class="ui-hide-label">
+            <fieldset data-role="controlgroup" data-mini="true">
+                <label for="address">
+                    Address
+                </label>
+                <input name="address" id="address" placeholder="500 Frank W. Burr Blvd Teaneck NJ 07666"
+                       value="" type="text">
+            </fieldset>
+        </div>
+        <div>
+            <a data-role="button" data-inline="true" data-transition="none" data-theme="e" href="#" data-icon="check"
+               data-iconpos="left" id="PlotSpecificLocationButton">
+                Plot
+            </a>
+            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
+               data-icon="back" data-iconpos="left">
+                Cancel
+            </a>
+        </div>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>
+            © Hackers in CTS
+        </h5>
+    </div>
+</div>
+<!-- /page -->
+
+
+<!-- /page -->
+<!-- Acceleration -->
+<div data-role="page" id="watchacceleration">
+    <div data-role="content" style="padding: 15px">
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="vertical">
+                <legend>
+                    Choose:
+                </legend>
+                <input name="radiobuttons1" id="radio1" value="10000" type="radio">
+                <label for="radio1">
+                    10 s
+                </label>
+                <input name="radiobuttons1" id="radio2" value="20000" type="radio">
+                <label for="radio2">
+                    20 s
+                </label>
+                <input name="radiobuttons1" id="radio3" value="30000" type="radio">
+                <label for="radio3">
+                    30 s
+                </label>
+            </fieldset>
+        </div>
+        <a data-role="button" data-transition="fade" href="#page1" id="watchAccelerationButton">
+            Watch Acceleration
+        </a>
+        <a data-role="button" data-transition="fade" href="#page1" id="clearWatch">
+            Clear Watch
+        </a>
+        
+         <div>
+            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
+               data-icon="back" data-iconpos="left">
+                Back
+            </a>
+        </div>
+	</div>
+</div>
+<!-- /page -->
+
+
+    </body>
+</html>
