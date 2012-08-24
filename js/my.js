@@ -1,4 +1,5 @@
 (function ($) {
+
     $.widget('mobile.tabbar', $.mobile.navbar, {
         _create:function () {
             // Set the theme before we call the prototype, which will
@@ -270,6 +271,5 @@
 
         return element;
     }
-
 
 })(jQuery);

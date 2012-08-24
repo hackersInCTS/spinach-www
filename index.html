@@ -7,15 +7,6 @@
     <title>CTS Hackers - POCs</title>
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" type="text/css"/>
     <link rel="stylesheet" href="css/my.css" type="text/css"/>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6e4BfRnKU_yRj1uodiOlnFAywSrEdIss&sensor=true"></script>
-
-    <script src="../psjs/cordova-2.0.0.js"></script>
-
-    <script src="js/my.js" type="text/javascript"></script>
-    <script src="js/script.js" type="text/javascript" ></script>
 </head>
 
 <body>
@@ -24,7 +15,7 @@
 <div data-role="page" id="index">
     <div data-theme="a" data-role="header" data-position="fixed">
         <h3>
-            POCs
+            Spinach POCs
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
@@ -50,15 +41,15 @@
                 <h3>
                     Geo Location
                 </h3>
-                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#dialog"
-                   data-rel="dialog" data-iconpos="right" id="PlotSpecificLocationButton">
+                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#locationDialog"
+                   data-rel="dialog" data-iconpos="right">
                     Plot specified location
                 </a>
                 <a id="CurrentLocation" data-role="button" data-transition="none" data-theme="e" data-icon="info"
                    data-iconpos="right">
                     Plot current location
                 </a>
-                 <a id="GetSpeedAndLocation" data-role="button" data-transition="none" data-theme="e" data-icon="info"
+                <a id="GetSpeedAndLocation" data-role="button" data-transition="none" data-theme="c" data-icon="info"
                    data-iconpos="right">
                     Get Speed And Location
                 </a>
@@ -67,12 +58,12 @@
                 <h3>
                     Accelerometer
                 </h3>
-                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#watchacceleration"
-                   data-rel="dialog" data-iconpos="right" id="openWatchAcceleration">
+                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#accelerationDialog"
+                   data-rel="dialog" data-iconpos="right">
                     Watch Acceleration
                 </a>
-                <a id="GetAcceleration" data-role="button" data-transition="none" data-theme="e" data-icon="info"
-                   data-iconpos="right">
+                <a data-role="button" data-transition="none" data-theme="e" data-icon="info"
+                   data-iconpos="right" id="GetAcceleration">
                     Get Acceleration
                 </a>
             </div>
@@ -101,7 +92,7 @@
     <div data-role="content" style="padding: 15px">
         <div>
             <input id="CurrentLocationFlag" type="hidden">
-            <img id="mapPlotImg"/>
+            <img id="mapPlotImg" src=""/>
             <h4 id="LocationMarker"></h4>
         </div>
         <div>
@@ -119,8 +110,8 @@
 </div>
 <!-- /page -->
 
-<!-- Start of map page -->
-<div data-role="page" id="dialog">
+<!-- Start of Location Dialog -->
+<div data-role="page" id="locationDialog">
     <div data-theme="a" data-role="header" data-position="fixed">
         <h3>
             Address
@@ -155,12 +146,15 @@
 </div>
 <!-- /page -->
 
-
-<!-- /page -->
-<!-- Acceleration -->
-<div data-role="page" id="watchacceleration">
+<!-- Start of Acceleration dialog -->
+<div data-role="page" id="accelerationDialog">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            Acceleration
+        </h3>
+    </div>
     <div data-role="content" style="padding: 15px">
-        <div data-role="fieldcontain">
+        <div data-role="fieldcontain" class="ui-hide-label">
             <fieldset data-role="controlgroup" data-type="vertical">
                 <legend>
                     Choose:
@@ -179,22 +173,39 @@
                 </label>
             </fieldset>
         </div>
-        <a data-role="button" data-transition="fade" href="#page1" id="watchAccelerationButton">
+        <a data-role="button" data-transition="fade" href="#" id="watchAccelerationButton">
             Watch Acceleration
         </a>
-        <a data-role="button" data-transition="fade" href="#page1" id="clearWatch">
+        <a data-role="button" data-transition="fade" href="#" id="clearWatch">
             Clear Watch
         </a>
-        
-         <div>
+
+        <div>
             <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
                data-icon="back" data-iconpos="left">
                 Back
             </a>
         </div>
-	</div>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>
+            © Hackers in CTS
+        </h5>
+    </div>
 </div>
 <!-- /page -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/libs/jquery-1.7.1.min.js"><\/script>')</script>
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+<script>window.jQuery.mobile || document.write('<script src="js/libs/jquery.mobile-1.1.1.min.js"><\/script>')</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA6e4BfRnKU_yRj1uodiOlnFAywSrEdIss&sensor=true"></script>
+
+<script src="../psjs/cordova-2.0.0.js"></script>
+
+<script src="js/my.js" type="text/javascript"></script>
+<script src="js/script.js" type="text/javascript"></script>
+
 </body>
 
 </html>

@@ -77,31 +77,30 @@ Spinach.Home = (function ($) {
             Spinach.Home.goToMapPage();
         },
         goToMapPage:function () {
-        
+
             Spinach.Map.resetMaps();
             $.mobile.changePage($('#map'));
         },
-        getCurrentAcceleration: function(){        
-        	var alertAcceleration = function(acceleration){
-        	alert('Acceleration X: ' + acceleration.x + '\n' +
-              'Acceleration Y: ' + acceleration.y + '\n' +
-              'Acceleration Z: ' + acceleration.z + '\n' +
-              'Timestamp: '      + acceleration.timestamp + '\n');
-        	};
-        	var alertAccelerationError = function(){
-        	alert('onError!');
-        	};
-        	Spinach.Accelerometer.getAcceleration(alertAcceleration,alertAccelerationError);
-        	
+        getCurrentAcceleration:function () {
+            var alertAcceleration = function (acceleration) {
+                alert('Acceleration X: ' + acceleration.x + '\n' +
+                    'Acceleration Y: ' + acceleration.y + '\n' +
+                    'Acceleration Z: ' + acceleration.z + '\n' +
+                    'Timestamp: ' + acceleration.timestamp + '\n');
+            };
+            var alertAccelerationError = function () {
+                alert('onError!');
+            };
+            Spinach.Accelerometer.getAcceleration(alertAcceleration, alertAccelerationError);
+
         },
-        goToWacthAccelerationPage: function(){        
-        $.mobile.changePage($('#watchacceleration'));
+        goToWatchAccelerationPage:function () {
+            $.mobile.changePage($('#accelerationDialog'));
         },
-        getSpeedAndLocation : function(){
-        
-        Spinach.Map.getSpeedAndLocation();
+        getSpeedAndLocation:function () {
+            Spinach.Map.getSpeedAndLocation();
         }
-        
+
     };
 }(jQuery));
 
@@ -182,11 +181,11 @@ Spinach.Map = (function ($) {
             navigator.geolocation.getCurrentPosition(onGetPositionSuccess, onGetPositionError, geoLocationOptions);
         },
         getSpeedAndLocation:function () {
-            
+
             var onGetPositionSuccess = function (position) {
                 alert('Lat: ' + position.coords.latitude + '\n' +
-              'Long: ' + position.coords.longitude + '\n' +
-              'Speed: ' + position.coords.speed + '\n');
+                    'Long: ' + position.coords.longitude + '\n' +
+                    'Speed: ' + position.coords.speed + '\n');
             };
             var onGetPositionError = function (error) {
                 Spinach.Common.alert('code: ' + error.code + '\n' +
@@ -202,49 +201,50 @@ Spinach.Map = (function ($) {
 }(jQuery));
 
 
-Spinach.Accelerometer=(function ($) {
-var watchID;
+Spinach.Accelerometer = (function ($) {
+    var watchID;
     return {
-    
-    getAcceleration:function(onSuccess,onError){
-    	navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
-    },
-    watchAcceleration:function(onSuccess, onError, options){
-    
-    	watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
-    	
-    },
-    clearWatch:function(){
-    
-	    if (watchID) {
-	            navigator.accelerometer.clearWatch(watchID);
-	            watchID = null;
-	        }
-    }
-    
+
+        getAcceleration:function (onSuccess, onError) {
+            navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+        },
+        watchAcceleration:function (onSuccess, onError, options) {
+
+            watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+
+        },
+        clearWatch:function () {
+
+            if (watchID) {
+                navigator.accelerometer.clearWatch(watchID);
+                watchID = null;
+            }
+        }
+
     };
 }(jQuery));
 
-Spinach.WatchAccelerometerDialog=(function ($) {
-    return {  
-    
-    watchAcceleration:function(){
-    	var interval=$("input[type='radio']:checked").val();
-    	
-    	var options = { frequency: interval };
-    	var onSuccess = function (acceleration){
-    	alert('Acceleration X: ' + acceleration.x + '\n' +
-              'Acceleration Y: ' + acceleration.y + '\n' +
-              'Acceleration Z: ' + acceleration.z + '\n' +
-              'Timestamp: '      + acceleration.timestamp + '\n');
-    	};
-    	var onError = function (error){
-    	alert('error!');
-    	};
-    	
-    	if(interval){    	
-    	Spinach.Accelerometer.watchAcceleration(onSuccess,onError,options);}
-    }    
+Spinach.WatchAccelerometerDialog = (function ($) {
+    return {
+
+        watchAcceleration:function () {
+            var interval = $("input[type='radio']:checked").val();
+
+            var options = { frequency:interval };
+            var onSuccess = function (acceleration) {
+                alert('Acceleration X: ' + acceleration.x + '\n' +
+                    'Acceleration Y: ' + acceleration.y + '\n' +
+                    'Acceleration Z: ' + acceleration.z + '\n' +
+                    'Timestamp: ' + acceleration.timestamp + '\n');
+            };
+            var onError = function (error) {
+                alert('error!');
+            };
+
+            if (interval) {
+                Spinach.Accelerometer.watchAcceleration(onSuccess, onError, options);
+            }
+        }
     };
 }(jQuery));
 
@@ -265,9 +265,9 @@ $(document).ready(function () {
     $(document).on('deviceready', Spinach.Home.deviceReady);
     $(document).on('click', '#CurrentLocation', Spinach.Home.currentLocationClick);
     $(document).on('click', '#PlotSpecificLocationButton', Spinach.Dialog.plotSpecificLocationClick);
-    $(document).on('click', '#GetSpeedAndLocation', Spinach.Home.getSpeedAndLocation);    
-    $(document).on('click', '#GetAcceleration', Spinach.Home.getCurrentAcceleration);    
-    $(document).on('click', '#openWatchAcceleration', Spinach.Home.goToWacthAccelerationPage);
+    $(document).on('click', '#GetSpeedAndLocation', Spinach.Home.getSpeedAndLocation);
+    $(document).on('click', '#GetAcceleration', Spinach.Home.getCurrentAcceleration);
+    $(document).on('click', '#openWatchAcceleration', Spinach.Home.goToWatchAccelerationPage);
     $(document).on('click', '#watchAccelerationButton', Spinach.WatchAccelerometerDialog.watchAcceleration);
     $(document).on('click', '#clearWatch', Spinach.Accelerometer.clearWatch);
 });
