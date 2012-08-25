@@ -66,9 +66,6 @@ Spinach.Common = (function ($) {
 
 Spinach.Home = (function ($) {
     return {
-        initialize:function () {
-
-        },
         deviceReady:function () {
             Spinach.Common.alert("PhoneGap is alive and kicking!!");
         },
@@ -77,38 +74,29 @@ Spinach.Home = (function ($) {
             Spinach.Home.goToMapPage();
         },
         goToMapPage:function () {
-
             Spinach.Map.resetMaps();
             $.mobile.changePage($('#map'));
         },
         getCurrentAcceleration:function () {
             var alertAcceleration = function (acceleration) {
-                alert('Acceleration X: ' + acceleration.x + '\n' +
+                Spinach.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
                     'Acceleration Y: ' + acceleration.y + '\n' +
                     'Acceleration Z: ' + acceleration.z + '\n' +
-                    'Timestamp: ' + acceleration.timestamp + '\n');
+                    'Timestamp     : ' + acceleration.timestamp + '\n');
             };
             var alertAccelerationError = function () {
-                alert('onError!');
+                Spinach.Common.alert('onError!');
             };
             Spinach.Accelerometer.getAcceleration(alertAcceleration, alertAccelerationError);
-
-        },
-        goToWatchAccelerationPage:function () {
-            $.mobile.changePage($('#accelerationDialog'));
         },
         getSpeedAndLocation:function () {
             Spinach.Map.getSpeedAndLocation();
         }
-
     };
 }(jQuery));
 
-Spinach.Dialog = (function ($) {
+Spinach.LocationDialog = (function ($) {
     return {
-        initialize:function () {
-
-        },
         plotSpecificLocationClick:function (e) {
             if ($('#address').val()) {
                 $('#CurrentLocationFlag').val(false);
@@ -124,7 +112,7 @@ Spinach.Map = (function ($) {
     return {
         initialize:function () {
             if ($('#CurrentLocationFlag').val() === 'true') {
-                Spinach.Map.getCurrentPosition();
+                Spinach.Map.getCurrentPositionAndGeocode();
             } else {
                 Spinach.Map.getSpecificLocation();
             }
@@ -150,7 +138,19 @@ Spinach.Map = (function ($) {
             };
             Spinach.GoogleMaps.geocode(userInput, onGeocodeSuccess, onGeocodeError);
         },
-        getCurrentPosition:function () {
+        getCurrentPosition:function (onSuccess) {
+            var onGetPositionError = function (error) {
+                Spinach.Common.alert('Code   : ' + error.code + '\n' +
+                    'Message: ' + error.message + '\n');
+            };
+            var geoLocationOptions = {
+                maximumAge:1000,
+                timeout:3000,
+                enableHighAccuracy:true
+            };
+            navigator.geolocation.getCurrentPosition(onSuccess, onGetPositionError, geoLocationOptions);
+        },
+        getCurrentPositionAndGeocode:function () {
             var onReverseGeocodeSuccess = function (mapViewModel) {
                 return function (resolvedCity) {
                     $('#LocationMarker').text(resolvedCity);
@@ -173,26 +173,15 @@ Spinach.Map = (function ($) {
                     onReverseGeocodeSuccess(mapViewModel),
                     onReverseGeocodeError(mapViewModel));
             };
-            var onGetPositionError = function (error) {
-                Spinach.Common.alert('code: ' + error.code + '\n' +
-                    'message: ' + error.message + '\n');
-            };
-            var geoLocationOptions = { maximumAge:1000, timeout:3000, enableHighAccuracy:true };
-            navigator.geolocation.getCurrentPosition(onGetPositionSuccess, onGetPositionError, geoLocationOptions);
+            Spinach.Map.getCurrentPosition(onGetPositionSuccess);
         },
         getSpeedAndLocation:function () {
-
-            var onGetPositionSuccess = function (position) {
-                alert('Lat: ' + position.coords.latitude + '\n' +
-                    'Long: ' + position.coords.longitude + '\n' +
-                    'Speed: ' + position.coords.speed + '\n');
+            var onGetSpeedAndLocationSuccess = function (position) {
+                Spinach.Common.alert('Latitude : ' + position.coords.latitude + '\n' +
+                    'Longitude: ' + position.coords.longitude + '\n' +
+                    'Speed    : ' + position.coords.speed + '\n');
             };
-            var onGetPositionError = function (error) {
-                Spinach.Common.alert('code: ' + error.code + '\n' +
-                    'message: ' + error.message + '\n');
-            };
-            var geoLocationOptions = { maximumAge:1000, timeout:3000, enableHighAccuracy:true };
-            navigator.geolocation.getCurrentPosition(onGetPositionSuccess, onGetPositionError, geoLocationOptions);
+            Spinach.Map.getCurrentPosition(onGetSpeedAndLocationSuccess);
         },
         plotMap:function (mapViewModel) {
             $('#mapPlotImg').attr('src', mapViewModel.getMapUrl());
@@ -200,48 +189,43 @@ Spinach.Map = (function ($) {
     };
 }(jQuery));
 
-
 Spinach.Accelerometer = (function ($) {
     var watchID;
     return {
-
         getAcceleration:function (onSuccess, onError) {
             navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
         },
         watchAcceleration:function (onSuccess, onError, options) {
-
             watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
-
         },
         clearWatch:function () {
-
+            $('#startWatchButton').show();
+            $('#clearWatchButton').hide();
             if (watchID) {
                 navigator.accelerometer.clearWatch(watchID);
                 watchID = null;
             }
         }
-
     };
 }(jQuery));
 
-Spinach.WatchAccelerometerDialog = (function ($) {
+Spinach.AccelerationDialog = (function ($) {
     return {
-
         watchAcceleration:function () {
-            var interval = $("input[type='radio']:checked").val();
-
+            var interval = $('#interval :radio:checked').val();
             var options = { frequency:interval };
             var onSuccess = function (acceleration) {
-                alert('Acceleration X: ' + acceleration.x + '\n' +
+                Spinach.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
                     'Acceleration Y: ' + acceleration.y + '\n' +
                     'Acceleration Z: ' + acceleration.z + '\n' +
                     'Timestamp: ' + acceleration.timestamp + '\n');
             };
             var onError = function (error) {
-                alert('error!');
+                Spinach.Common.alert('error!');
             };
-
             if (interval) {
+                $('#startWatchButton').hide();
+                $('#clearWatchButton').show();
                 Spinach.Accelerometer.watchAcceleration(onSuccess, onError, options);
             }
         }
@@ -249,25 +233,19 @@ Spinach.WatchAccelerometerDialog = (function ($) {
 }(jQuery));
 
 //Page specific initialize events
-$(document).on("pageshow", "#index", function () {
-    Spinach.Home.initialize();
-});
-
-$(document).on("pageshow", "#dialog", function () {
-    Spinach.Dialog.initialize();
-});
-
 $(document).on("pageshow", "#map", function () {
     Spinach.Map.initialize();
 });
 
+//Document initialize events
 $(document).ready(function () {
     $(document).on('deviceready', Spinach.Home.deviceReady);
     $(document).on('click', '#CurrentLocation', Spinach.Home.currentLocationClick);
-    $(document).on('click', '#PlotSpecificLocationButton', Spinach.Dialog.plotSpecificLocationClick);
     $(document).on('click', '#GetSpeedAndLocation', Spinach.Home.getSpeedAndLocation);
     $(document).on('click', '#GetAcceleration', Spinach.Home.getCurrentAcceleration);
-    $(document).on('click', '#openWatchAcceleration', Spinach.Home.goToWatchAccelerationPage);
-    $(document).on('click', '#watchAccelerationButton', Spinach.WatchAccelerometerDialog.watchAcceleration);
-    $(document).on('click', '#clearWatch', Spinach.Accelerometer.clearWatch);
+
+    $(document).on('click', '#PlotSpecificLocationButton', Spinach.LocationDialog.plotSpecificLocationClick);
+
+    $(document).on('click', '#startWatchButton', Spinach.AccelerationDialog.watchAcceleration);
+    $(document).on('click', '#clearWatchButton', Spinach.Accelerometer.clearWatch);
 });

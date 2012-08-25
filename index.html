@@ -154,34 +154,35 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-        <div data-role="fieldcontain" class="ui-hide-label">
-            <fieldset data-role="controlgroup" data-type="vertical">
+        <div data-role="fieldcontain">
+            <fieldset data-role="controlgroup" data-type="vertical" id="interval">
                 <legend>
-                    Choose:
+                    Interval:
                 </legend>
-                <input name="radiobuttons1" id="radio1" value="10000" type="radio">
-                <label for="radio1">
-                    10 s
+                <input name="interval" id="onesecond" value="1000" type="radio">
+                <label for="onesecond">
+                    1 s
                 </label>
-                <input name="radiobuttons1" id="radio2" value="20000" type="radio">
-                <label for="radio2">
-                    20 s
+                <input name="interval" id="twoseconds" value="2000" type="radio">
+                <label for="twoseconds">
+                    2 s
                 </label>
-                <input name="radiobuttons1" id="radio3" value="30000" type="radio">
-                <label for="radio3">
-                    30 s
+                <input name="interval" id="threeseconds" value="3000" type="radio">
+                <label for="threeseconds">
+                    3 s
                 </label>
             </fieldset>
         </div>
         <div>
-            <a data-role="button" data-inline="true" data-transition="fade" href="#" data-icon="grid"
-               id="watchAccelerationButton">
-                Watch
+            <a data-role="button" data-inline="true" data-transition="none" data-icon="grid"
+               id="startWatchButton">
+                Start Watch
             </a>
-            <a data-role="button" data-inline="true" data-transition="fade" href="#" data-icon="delete" id="clearWatch">
-                Clear
+            <a data-role="button" data-inline="true" data-transition="none" data-icon="delete"
+               id="clearWatchButton" style="display: none;">
+                Clear Watch
             </a>
-            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
+            <a data-role="button" data-rel="back" data-inline="true" data-transition="none"
                data-icon="back" data-iconpos="left">
                 Back
             </a>
