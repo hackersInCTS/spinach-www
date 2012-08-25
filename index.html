@@ -30,11 +30,15 @@
                 </a>
                 <a data-role="button" data-transition="none" data-theme="e" href="#" data-icon="star"
                    data-iconpos="left">
+                    Capture Audio
+                </a>
+                <a data-role="button" data-transition="none" data-theme="c" href="#" data-icon="star"
+                   data-iconpos="left">
                     Capture Video
                 </a>
-                <a data-role="button" data-transition="none" data-theme="c" href="#" data-icon="search"
-                   data-iconpos="left">
-                    Photos &amp; Videos
+                <a data-role="button" data-transition="none" data-theme="a" href="#getPhotoDialog" data-icon="search"
+                   data-rel="dialog"  data-iconpos="left">
+                    Get Photo For Something
                 </a>
             </div>
             <div data-role="collapsible" data-collapsed="true">
@@ -132,8 +136,8 @@
                data-iconpos="left" id="PlotSpecificLocationButton">
                 Plot
             </a>
-            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
-               data-icon="back" data-iconpos="left">
+            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" data-icon="back"
+               data-iconpos="left">
                 Cancel
             </a>
         </div>
@@ -192,6 +196,58 @@
         <h5>
             © Hackers in CTS
         </h5>
+    </div>
+</div>
+<!-- /page -->
+
+<!-- Start of GetPhoto dialog -->
+<div data-role="page" id="getPhotoDialog">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            Get Photo
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <fieldset id="destinationType" data-role="controlgroup" data-type="horizontal" data-mini="true">
+            <legend>
+                Get Photo as:
+            </legend>
+            <input name="destinationType" id="dataUrl" value="0" type="radio">
+            <label for="dataUrl">
+                Data URL
+            </label>
+            <input name="destinationType" id="fileUri" value="1" type="radio">
+            <label for="fileUri">
+                File URI
+            </label>
+        </fieldset>
+        <a data-role="button" data-transition="none" data-theme="b" data-icon="star" data-iconpos="right"
+           id="FromLibraryButton">
+            From Library
+        </a>
+        <a data-role="button" data-transition="none" data-theme="e" data-icon="gear" data-iconpos="right"
+           id="FromCameraButton">
+            From Camera
+        </a>
+        <a data-role="button" data-transition="none" data-rel="back" data-icon="back" data-iconpos="right">
+            Cancel
+        </a>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>
+            © Hackers in CTS
+        </h5>
+    </div>
+</div>
+<!-- /page -->
+
+<!-- Start of ShowPhoto dialog -->
+<div data-role="dialog" id="showPhotoDialog">
+    <div data-role="content" style="padding: 15px">
+        <img id="photoDisplay" src="" style="display:none;"/>
+        <a data-role="button" data-transition="none" data-icon="back" data-iconpos="left" id="ShowPhotoCancelButton">
+            Back
+        </a>
     </div>
 </div>
 <!-- /page -->

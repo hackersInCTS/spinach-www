@@ -53,9 +53,10 @@ Spinach.GoogleMaps = (function ($) {
 
 Spinach.Common = (function ($) {
     return {
+        Constants:{},
         alert:function (message) {
             try {
-                navigator.notification.alert(message, $.noop, "CTS Hackers");
+                navigator.notification.alert(message, $.noop, "Spinach POCs");
             }
             catch (e) {
                 alert(message);
@@ -68,6 +69,10 @@ Spinach.Home = (function ($) {
     return {
         deviceReady:function () {
             Spinach.Common.alert("PhoneGap is alive and kicking!!");
+            Spinach.Constants.Camera = {
+                PictureSourceType:navigator.camera.PictureSourceType,
+                DestinationType:navigator.camera.DestinationType
+            }
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
@@ -232,6 +237,64 @@ Spinach.AccelerationDialog = (function ($) {
     };
 }(jQuery));
 
+Spinach.GetPhotoDialog = (function ($) {
+    return {
+        fromLibrary:function () {
+            Spinach.GetPhotoDialog.getPhoto(Spinach.Constants.Camera.PictureSourceType.PHOTOLIBRARY);
+        },
+        fromCamera:function () {
+            Spinach.GetPhotoDialog.getPhoto(Spinach.Constants.Camera.PictureSourceType.CAMERA);
+        },
+        getPhoto:function (sourceType) {
+            var destinationType,
+                selectedDestinationType = $('#destinationType :radio:checked').val();
+            debugger;
+            if (selectedDestinationType === "0") {
+                destinationType = Spinach.Constants.Camera.DestinationType.DATA_URL;
+            } else if (selectedDestinationType === "1") {
+                destinationType = Spinach.Constants.Camera.DestinationType.FILE_URI;
+            } else {
+                Spinach.Common.alert('Please select the destination type (\'Data URL\' or \'File URI\')');
+            }
+            var cameraOptions = {
+                quality:75,
+                destinationType:destinationType,
+                sourceType:sourceType,
+                allowEdit:true,
+                encodingType:navigator.camera.EncodingType.JPEG,
+                targetWidth:100,
+                targetHeight:100,
+                mediaType:navigator.camera.MediaType.PICTURE,
+                correctOrientation:true,
+                popoverOptions:{
+                    //only relevant for iOS
+                },
+                saveToPhotoAlbum:false
+            };
+            var onGetPhotoSuccess = function (imageData) {
+                console.log("Image Data is : " + imageData);
+                var formattedImageData = (destinationType === Spinach.Constants.Camera.DestinationType.DATA_URL) ?
+                    "data:image/jpeg;base64," + imageData : imageData;
+                $('#photoDisplay').attr('src', formattedImageData).show();
+                $.mobile.changePage($('#showPhotoDialog'));
+            };
+            var onGetPhotoError = function (message) {
+                Spinach.Common.alert("Camera.getPicture() failed with message: " + message);
+            };
+            navigator.camera.getPicture(onGetPhotoSuccess, onGetPhotoError, cameraOptions);
+        }
+    };
+}(jQuery));
+
+Spinach.ShowPhotoDialog = (function ($) {
+    return {
+        close:function () {
+            $('#photoDisplay').attr('src', '').hide();
+            $.mobile.changePage($('#index'));
+        }
+    };
+}(jQuery));
+
 //Page specific initialize events
 $(document).on("pageshow", "#map", function () {
     Spinach.Map.initialize();
@@ -248,4 +311,9 @@ $(document).ready(function () {
 
     $(document).on('click', '#startWatchButton', Spinach.AccelerationDialog.watchAcceleration);
     $(document).on('click', '#clearWatchButton', Spinach.Accelerometer.clearWatch);
+
+    $(document).on('click', '#FromLibraryButton', Spinach.GetPhotoDialog.fromLibrary);
+    $(document).on('click', '#FromCameraButton', Spinach.GetPhotoDialog.fromCamera);
+
+    $(document).on('click', '#ShowPhotoCancelButton', Spinach.ShowPhotoDialog.close);
 });
