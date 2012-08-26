@@ -286,7 +286,6 @@ Spinach.ShowPhotoDialog = (function ($) {
     return {
         close:function () {
             $('#photoDisplay').attr('src', '').hide();
-            $.mobile.changePage($('#index'));
         }
     };
 }(jQuery));
