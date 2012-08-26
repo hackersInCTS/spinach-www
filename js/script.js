@@ -212,7 +212,7 @@ Spinach.Accelerometer = (function ($) {
 Spinach.AccelerationDialog = (function ($) {
     return {
         watchAcceleration:function () {
-            var interval = $('#interval :radio:checked').val();
+            var interval = parseInt($('#interval :radio:checked').val(), 10);
             var options = { frequency:interval };
             var onSuccess = function (acceleration) {
                 Spinach.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
