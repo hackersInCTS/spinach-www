@@ -53,7 +53,6 @@ Spinach.GoogleMaps = (function ($) {
 
 Spinach.Common = (function ($) {
     return {
-        Constants:{},
         alert:function (message) {
             try {
                 navigator.notification.alert(message, $.noop, "Spinach POCs");
@@ -69,10 +68,6 @@ Spinach.Home = (function ($) {
     return {
         deviceReady:function () {
             Spinach.Common.alert("PhoneGap is alive and kicking!!");
-            Spinach.Constants.Camera = {
-                PictureSourceType:navigator.camera.PictureSourceType,
-                DestinationType:navigator.camera.DestinationType
-            }
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
@@ -240,21 +235,21 @@ Spinach.AccelerationDialog = (function ($) {
 Spinach.GetPhotoDialog = (function ($) {
     return {
         fromLibrary:function () {
-            Spinach.GetPhotoDialog.getPhoto(Spinach.Constants.Camera.PictureSourceType.PHOTOLIBRARY);
+            Spinach.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.PHOTOLIBRARY);
         },
         fromCamera:function () {
-            Spinach.GetPhotoDialog.getPhoto(Spinach.Constants.Camera.PictureSourceType.CAMERA);
+            Spinach.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.CAMERA);
         },
         getPhoto:function (sourceType) {
             var destinationType,
                 selectedDestinationType = $('#destinationType :radio:checked').val();
-            debugger;
             if (selectedDestinationType === "0") {
-                destinationType = Spinach.Constants.Camera.DestinationType.DATA_URL;
+                destinationType = navigator.camera.DestinationType.DATA_URL;
             } else if (selectedDestinationType === "1") {
-                destinationType = Spinach.Constants.Camera.DestinationType.FILE_URI;
+                destinationType = navigator.camera.DestinationType.FILE_URI;
             } else {
                 Spinach.Common.alert('Please select the destination type (\'Data URL\' or \'File URI\')');
+                return;
             }
             var cameraOptions = {
                 quality:75,
@@ -262,8 +257,6 @@ Spinach.GetPhotoDialog = (function ($) {
                 sourceType:sourceType,
                 allowEdit:true,
                 encodingType:navigator.camera.EncodingType.JPEG,
-                targetWidth:100,
-                targetHeight:100,
                 mediaType:navigator.camera.MediaType.PICTURE,
                 correctOrientation:true,
                 popoverOptions:{
@@ -272,14 +265,17 @@ Spinach.GetPhotoDialog = (function ($) {
                 saveToPhotoAlbum:false
             };
             var onGetPhotoSuccess = function (imageData) {
-                console.log("Image Data is : " + imageData);
-                var formattedImageData = (destinationType === Spinach.Constants.Camera.DestinationType.DATA_URL) ?
-                    "data:image/jpeg;base64," + imageData : imageData;
-                $('#photoDisplay').attr('src', formattedImageData).show();
+                var formattedImageData = (destinationType === navigator.camera.DestinationType.DATA_URL) ?
+                    'data:image/jpeg;base64,' + imageData : imageData;
+                $('#photoDisplay').attr('src', formattedImageData)
+                    .css({
+                        width:$(window).width() - 50
+                    })
+                    .show();
                 $.mobile.changePage($('#showPhotoDialog'));
             };
             var onGetPhotoError = function (message) {
-                Spinach.Common.alert("Camera.getPicture() failed with message: " + message);
+                console.log('navigator.camera.getPicture failed with message: ' + message);
             };
             navigator.camera.getPicture(onGetPhotoSuccess, onGetPhotoError, cameraOptions);
         }

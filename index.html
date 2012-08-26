@@ -37,7 +37,7 @@
                     Capture Video
                 </a>
                 <a data-role="button" data-transition="none" data-theme="a" href="#getPhotoDialog" data-icon="search"
-                   data-rel="dialog"  data-iconpos="left">
+                   data-rel="dialog" data-iconpos="left">
                     Get Photo For Something
                 </a>
             </div>
@@ -242,9 +242,11 @@
 <!-- /page -->
 
 <!-- Start of ShowPhoto dialog -->
-<div data-role="dialog" id="showPhotoDialog">
+<div data-role="page" id="showPhotoDialog">
     <div data-role="content" style="padding: 15px">
-        <img id="photoDisplay" src="" style="display:none;"/>
+        <div id="photoContainer">
+            <img id="photoDisplay" src=""/>
+        </div>
         <a data-role="button" data-transition="none" data-icon="back" data-iconpos="left" id="ShowPhotoCancelButton">
             Back
         </a>
