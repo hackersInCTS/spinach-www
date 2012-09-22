@@ -299,7 +299,7 @@ Spinach.QRCodeScanner = (function ($) {
             console.log('QR Code Scan canceled.');
         },
         scan:function () {
-            ScanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
+            scanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
                 Spinach.QRCodeScanner.onScanCancel,
                 "RGdrxgQ1EeKL/xUUWaD/JXoOqW06EAl13a1NJfBl5dU",
                 {
