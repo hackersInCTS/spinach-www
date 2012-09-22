@@ -290,6 +290,31 @@ Spinach.ShowPhotoDialog = (function ($) {
     };
 }(jQuery));
 
+Spinach.QRCodeScanner = (function ($) {
+    return {
+        onScanSuccess:function (results) {
+            Spinach.Common.alert('Scan result: ' + results[0]);
+        },
+        onScanCancel:function () {
+            console.log('QR Code Scan canceled.');
+        },
+        scan:function () {
+            ScanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
+                Spinach.QRCodeScanner.onScanCancel,
+                "RGdrxgQ1EeKL/xUUWaD/JXoOqW06EAl13a1NJfBl5dU",
+                {
+                    'beep':true,
+                    'qr':true,
+                    'scanningHotspot':'0.5/0.5',
+                    'vibrate':true,
+                    'torch':true,
+                    'titleMessage':'Scan the QR Code'
+                }
+            );
+        }
+    };
+}(jQuery));
+
 //Page specific initialize events
 $(document).on("pageshow", "#map", function () {
     Spinach.Map.initialize();
@@ -306,6 +331,8 @@ $(document).ready(function () {
 
     $(document).on('click', '#startWatchButton', Spinach.AccelerationDialog.watchAcceleration);
     $(document).on('click', '#clearWatchButton', Spinach.Accelerometer.clearWatch);
+
+    $(document).on('click', '#ScanQRCodeButton', Spinach.QRCodeScanner.scan);
 
     $(document).on('click', '#FromLibraryButton', Spinach.GetPhotoDialog.fromLibrary);
     $(document).on('click', '#FromCameraButton', Spinach.GetPhotoDialog.fromCamera);
