@@ -306,9 +306,10 @@ Spinach.QRCodeScanner = (function ($) {
                     'beep':true,
                     'qr':true,
                     'scanningHotspot':'0.5/0.5',
-                    'vibrate':true,
-                    'torch':true,
-                    'titleMessage':'Scan the QR Code'
+                    'vibrate':true
+                    //,
+                    //'torch':true,
+                    //'titleMessage':'Scan the QR Code'
                 }
             );
         }
