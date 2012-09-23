@@ -73,10 +73,10 @@ Spinach.Home = (function ($) {
         },
         deviceReady:function () {
             Spinach.Common.alert("PhoneGap is alive and kicking!!");
-            xtifySDK.start(
-                Spinach.Home.notificationCallback, function (error) {
-                    document.body.innerHTML += '<h2> Error occurred while starting Xtify SDK. </h2><br />';
-                });
+            //xtifySDK.start(
+            //    Spinach.Home.notificationCallback, function (error) {
+            //        document.body.innerHTML += '<h2> Error occurred while starting Xtify SDK. </h2><br />';
+            //    });
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
