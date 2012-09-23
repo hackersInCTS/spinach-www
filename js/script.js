@@ -299,35 +299,18 @@ Spinach.QRCodeScanner = (function ($) {
             console.log('QR Code Scan canceled.');
         },
         scan:function () {
-            cordova.exec(Spinach.QRCodeScanner.onScanSuccess,
+            scanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
                 Spinach.QRCodeScanner.onScanCancel,
-                'ScanditSDK',
-                'scan',
-                [
-                    'RGdrxgQ1EeKL/xUUWaD/JXoOqW06EAl13a1NJfBl5dU',
-                    {
-                        'beep':true,
-                        'qr':true,
-                        'scanningHotspot':'0.5/0.5',
-                        'vibrate':true,
-                        'torch':true,
-                        'titleMessage':'Scan the QR Code'
-                    }
-                ]
+                "RGdrxgQ1EeKL/xUUWaD/JXoOqW06EAl13a1NJfBl5dU",
+                {
+                    'beep':true,
+                    'qr':true,
+                    'scanningHotspot':'0.5/0.5',
+                    'vibrate':true,
+                    'torch':true,
+                    'titleMessage':'Scan the QR Code'
+                }
             );
-//            scanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
-//                Spinach.QRCodeScanner.onScanCancel,
-//                "RGdrxgQ1EeKL/xUUWaD/JXoOqW06EAl13a1NJfBl5dU",
-//                {
-//                    'beep':true,
-//                    'qr':true,
-//                    'scanningHotspot':'0.5/0.5',
-//                    'vibrate':true,
-//                    'torch':true,
-//                    'titleMessage':'Scan the QR Code'
-//                }
-//            );
-//            return false;
         }
     };
 }(jQuery));
