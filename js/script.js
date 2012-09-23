@@ -66,8 +66,17 @@ Spinach.Common = (function ($) {
 
 Spinach.Home = (function ($) {
     return {
+        notificationCallback:function(data){
+            document.body.innerHTML += '<h2> Notification Received. Title: ' +
+                data["com.xtify.sdk.NOTIFICATION_TITLE"] + ' <br /> ' + ' Content: ' +
+                data["com.xtify.sdk.NOTIFICATION_CONTENT"];
+        },
         deviceReady:function () {
             Spinach.Common.alert("PhoneGap is alive and kicking!!");
+            xtifySDK.start(
+                Spinach.Home.notificationCallback, function (error) {
+                    document.body.innerHTML += '<h2> Error occurred while starting Xtify SDK. </h2><br />';
+                });
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
