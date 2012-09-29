@@ -55,7 +55,7 @@ Spinach.Common = (function ($) {
     return {
         alert:function (message) {
             try {
-                navigator.notification.alert(message, $.noop, "Spinach POCs");
+                navigator.notification.alert(message, $.noop, "Spinach");
             }
             catch (e) {
                 alert(message);
