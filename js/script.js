@@ -67,7 +67,13 @@ Spinach.Common = (function ($) {
 Spinach.Home = (function ($) {
     return {
         deviceReady:function () {
-            Spinach.Common.alert("PhoneGap is alive and kicking!!");
+            var deviceDetail = 'Device Name    :' + device.name + '<br />' +
+                'Device Cordova :' + device.cordova + '<br />' +
+                'Device Platform:' + device.platform + '<br />' +
+                'Device UUID    :' + device.uuid + '<br />' +
+                'Device Version :' + device.version + '<br />';
+            Spinach.Common.alert(deviceDetail);
+            console.log(deviceDetail);
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
@@ -317,10 +323,10 @@ Spinach.QRCodeScanner = (function ($) {
 
 Spinach.Capture = (function ($) {
     return {
-        getFormatDataSuccess:function(mediaFileData){
+        getFormatDataSuccess:function (mediaFileData) {
             console.log('Media File Data: ' + JSON.stringify(mediaFileData));
-        }  ,
-        getFormatDataError:function(error){
+        },
+        getFormatDataError:function (error) {
             console.log('Error in getFormatData function: ' + JSON.stringify(error));
         },
         captureAudioSuccess:function (mediaFile) {
