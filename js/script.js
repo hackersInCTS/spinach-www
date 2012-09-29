@@ -40,8 +40,8 @@ Spinach.GoogleMaps = (function ($) {
                 'latLng':latLong
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[5]) {
-                        return onSuccess(results[5].formatted_address);
+                    if (results[4]) {
+                        return onSuccess(results[4].formatted_address);
                     }
                 } else {
                     onError("reverseGeocode failed due to: " + status);
@@ -315,6 +315,32 @@ Spinach.QRCodeScanner = (function ($) {
     };
 }(jQuery));
 
+Spinach.Capture = (function ($) {
+    return {
+        getFormatDataSuccess:function(mediaFileData){
+            console.log('Media File Data: ' + JSON.stringify(mediaFileData));
+        }  ,
+        getFormatDataError:function(error){
+            console.log('Error in getFormatData function: ' + JSON.stringify(error));
+        },
+        captureAudioSuccess:function (mediaFile) {
+            console.log('Media File: ' + JSON.stringify(mediaFile));
+            mediaFile.getFormatData(Spinach.Capture.getFormatDataSuccess, Spinach.Capture.getFormatDataError);
+        },
+        captureAudioError:function (error) {
+            console.log('Error in CaptureAudio function: ' + JSON.stringify(error));
+        },
+        captureAudio:function () {
+            navigator.device.capture.captureAudio(
+                Spinach.Capture.captureAudioSuccess,
+                Spinach.Capture.captureAudioError,
+                {
+                    limit:1
+                });
+        }
+    };
+}(jQuery));
+
 //Page specific initialize events
 $(document).on("pageshow", "#map", function () {
     Spinach.Map.initialize();
@@ -338,4 +364,6 @@ $(document).ready(function () {
     $(document).on('click', '#FromCameraButton', Spinach.GetPhotoDialog.fromCamera);
 
     $(document).on('click', '#ShowPhotoCancelButton', Spinach.ShowPhotoDialog.close);
+
+    $(document).on('click', '#CaptureAudioButton', Spinach.Capture.captureAudio);
 });
