@@ -67,13 +67,8 @@ Spinach.Common = (function ($) {
 Spinach.Home = (function ($) {
     return {
         deviceReady:function () {
-            var deviceDetail = 'Device Name    :' + device.name + '<br />' +
-                'Device Cordova :' + device.cordova + '<br />' +
-                'Device Platform:' + device.platform + '<br />' +
-                'Device UUID    :' + device.uuid + '<br />' +
-                'Device Version :' + device.version + '<br />';
-            Spinach.Common.alert(deviceDetail);
-            console.log(deviceDetail);
+            Parse.initialize("P441UQwfmoHEiwWlqWi4EttM24aajQEWYWw2VLIL", "6K7xrjfJlJDzyOjpITr4SqZTzn5WWMTqiZFXdfW6");
+            Spinach.Device.register();
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
@@ -342,6 +337,58 @@ Spinach.Capture = (function ($) {
                 Spinach.Capture.captureAudioError,
                 {
                     limit:1
+                });
+        }
+    };
+}(jQuery));
+
+Spinach.Device = (function ($) {
+    return {
+        Class:Parse.Object.extend("SpinachDevice"),
+        instance:null,
+        getDeviceId:function () {
+            return device.platform + "_" + device.name + "_" + device.uuid;
+        },
+        register:function () {
+            var query = new Parse.Query(Spinach.Device.Class);
+            query.equalTo('deviceId', Spinach.Device.getDeviceId());
+            query.first({
+                success:function (spinachDevice) {
+                    if (spinachDevice) {
+                        console.log('Successfully retrieved device...');
+                        Spinach.Device.instance = spinachDevice;
+                    } else {
+                        console.log('Could not retrieve device... Adding now...');
+                        Spinach.Device.add();
+                    }
+                },
+                error:function (error) {
+                    console.log('Error in find: ' + JSON.stringify(error));
+                }
+            });
+        },
+        add:function () {
+            var spinachDevice = new Spinach.Device.Class();
+            spinachDevice.save(
+                {
+                    deviceId:Spinach.Device.getDeviceId(),
+                    name:device.name,
+                    cordova:device.cordova,
+                    platform:device.platform,
+                    uuid:device.uuid,
+                    version:device.version,
+                    apnsDeviceId:'',
+                    gcmDeviceId:'',
+                    dateLastUsed:new Date()
+                },
+                {
+                    success:function (spinachDevice) {
+                        Spinach.Common.alert("Added device...");
+                        Spinach.Device.instance = spinachDevice;
+                    },
+                    error:function (error) {
+                        console.log('Error adding device: ' + JSON.stringify(error));
+                    }
                 });
         }
     };
