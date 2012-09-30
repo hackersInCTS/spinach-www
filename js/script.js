@@ -51,6 +51,55 @@ Spinach.GoogleMaps = (function ($) {
     };
 }(jQuery));
 
+Spinach.GCM = (function ($) {
+    return {
+        gcmDeviceId:null,
+        registerSuccess:function (obj) {
+            console.log('Successfully registered. Waiting for GCM callback: ' + JSON.stringify(obj));
+        },
+        registerError:function (error) {
+            console.log('Error in register: ' + JSON.stringify(error));
+        },
+        register:function () {
+            window.GCM.register("400880163680",
+                "Spinach.GCM.callback",
+                Spinach.GCM.registerSuccess,
+                Spinach.GCM.registerError);
+        },
+        callback:function (e) {
+            console.log('GCM Event Received: ' + e.event);
+            switch (e.event) {
+                case 'registered':
+                    // the definition of the e variable is json return defined in GCMReceiver.java
+                    // In my case on registered I have EVENT and REGID defined
+                    Spinach.Device.gcmDeviceId = e.regid;
+                    if (Spinach.Device.gcmDeviceId.length > 0) {
+                        console.log('Received GCM Device ID: ' + Spinach.Device.gcmDeviceId);
+                        console.log('Calling \'Spinach.Device.add\' with empty APNS ID and valid GCM Device ID');
+                        Spinach.Device.add('', e.regid);
+                    }
+                    break;
+                case 'message':
+                    // the definition of the e variable is json return defined in GCMReceiver.java
+                    // In my case on registered I have EVENT, MSG and MSGCNT defined
+
+                    // You will NOT receive any messages unless you build a HOST server application to send
+                    // Messages to you, This is just here to show you how it might work
+                    Spinach.Common.alert('Message: ' + e.message);
+                    Spinach.Common.alert('Message Count: ' + e.msgcnt);
+                    break;
+                case 'error':
+                    Spinach.Common.alert('Error: ' + e.msg);
+                    break;
+                default:
+                    Spinach.Common.alert('An unknown event was received: ' + JSON.stringify(e));
+                    break;
+            }
+        }
+
+    };
+}(jQuery));
+
 Spinach.Common = (function ($) {
     return {
         alert:function (message) {
@@ -358,8 +407,8 @@ Spinach.Device = (function ($) {
                         console.log('Successfully retrieved device...');
                         Spinach.Device.instance = spinachDevice;
                     } else {
-                        console.log('Could not retrieve device... Adding now...');
-                        Spinach.Device.add();
+                        console.log('Could not retrieve device... Registering with GCM before add...');
+                        Spinach.GCM.register();
                     }
                 },
                 error:function (error) {
@@ -367,7 +416,7 @@ Spinach.Device = (function ($) {
                 }
             });
         },
-        add:function () {
+        add:function (apnsDeviceId, gcmDeviceId) {
             var spinachDevice = new Spinach.Device.Class();
             spinachDevice.save(
                 {
@@ -377,8 +426,8 @@ Spinach.Device = (function ($) {
                     platform:device.platform,
                     uuid:device.uuid,
                     version:device.version,
-                    apnsDeviceId:'',
-                    gcmDeviceId:'',
+                    apnsDeviceId:apnsDeviceId,
+                    gcmDeviceId:gcmDeviceId,
                     dateLastUsed:new Date()
                 },
                 {
