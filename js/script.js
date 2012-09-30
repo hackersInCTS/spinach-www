@@ -61,7 +61,7 @@ Spinach.GCM = (function ($) {
             console.log('Error in register: ' + JSON.stringify(error));
         },
         register:function () {
-            window.GCM.register("400880163680",
+            window.GCM.register("237121290143",
                 "Spinach.GCM.callback",
                 Spinach.GCM.registerSuccess,
                 Spinach.GCM.registerError);
@@ -116,7 +116,7 @@ Spinach.Common = (function ($) {
 Spinach.Home = (function ($) {
     return {
         deviceReady:function () {
-            Parse.initialize("P441UQwfmoHEiwWlqWi4EttM24aajQEWYWw2VLIL", "6K7xrjfJlJDzyOjpITr4SqZTzn5WWMTqiZFXdfW6");
+            Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
             Spinach.Device.register();
         },
         currentLocationClick:function () {
@@ -351,7 +351,7 @@ Spinach.QRCodeScanner = (function ($) {
         scan:function () {
             scanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
                 Spinach.QRCodeScanner.onScanCancel,
-                "RGdrxgQ1EeKL/xUUWaD/JXoOqW06EAl13a1NJfBl5dU",
+                "4ABoYAsrEeKA+T2bxul+mhOXR7pIOLby9vVmgFSTTOw",
                 {
                     'beep':true,
                     'qr':true,
