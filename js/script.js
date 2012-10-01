@@ -16,90 +16,6 @@ var MapViewModel = function () {
 //Namespaced JS
 var Spinach = Spinach || {};
 
-Spinach.GoogleMaps = (function ($) {
-    return {
-        geocode:function (address, onSuccess, onError) {
-            var geoCoder = new google.maps.Geocoder();
-            geoCoder.geocode({ 'address':address}, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    var location = {
-                        longitude:results[0].geometry.location.lng,
-                        latitude:results[0].geometry.location.lat,
-                        address:results[0].formatted_address
-                    };
-                    onSuccess(location);
-                } else {
-                    onError('Geocode was not successful for the following reason: ' + status);
-                }
-            });
-        },
-        reverseGeocode:function (latitude, longitude, onSuccess, onError) {
-            var latLong = new google.maps.LatLng(latitude, longitude);
-            var geoCoder = new google.maps.Geocoder();
-            geoCoder.geocode({
-                'latLng':latLong
-            }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    if (results[4]) {
-                        return onSuccess(results[4].formatted_address);
-                    }
-                } else {
-                    onError("reverseGeocode failed due to: " + status);
-                }
-            });
-        }
-    };
-}(jQuery));
-
-Spinach.GCM = (function ($) {
-    return {
-        gcmDeviceId:null,
-        registerSuccess:function (obj) {
-            console.log('Successfully registered. Waiting for GCM callback: ' + JSON.stringify(obj));
-        },
-        registerError:function (error) {
-            console.log('Error in register: ' + JSON.stringify(error));
-        },
-        register:function () {
-            window.GCM.register("237121290143",
-                "Spinach.GCM.callback",
-                Spinach.GCM.registerSuccess,
-                Spinach.GCM.registerError);
-        },
-        callback:function (e) {
-            console.log('GCM Event Received: ' + e.event);
-            switch (e.event) {
-                case 'registered':
-                    // the definition of the e variable is json return defined in GCMReceiver.java
-                    // In my case on registered I have EVENT and REGID defined
-                    Spinach.Device.gcmDeviceId = e.regid;
-                    if (Spinach.Device.gcmDeviceId.length > 0) {
-                        console.log('Received GCM Device ID: ' + Spinach.Device.gcmDeviceId);
-                        console.log('Calling \'Spinach.Device.add\' with empty APNS ID and valid GCM Device ID');
-                        Spinach.Device.add('', e.regid);
-                    }
-                    break;
-                case 'message':
-                    // the definition of the e variable is json return defined in GCMReceiver.java
-                    // In my case on registered I have EVENT, MSG and MSGCNT defined
-
-                    // You will NOT receive any messages unless you build a HOST server application to send
-                    // Messages to you, This is just here to show you how it might work
-                    Spinach.Common.alert('Message: ' + e.message);
-                    Spinach.Common.alert('Message Count: ' + e.msgcnt);
-                    break;
-                case 'error':
-                    Spinach.Common.alert('Error: ' + e.msg);
-                    break;
-                default:
-                    Spinach.Common.alert('An unknown event was received: ' + JSON.stringify(e));
-                    break;
-            }
-        }
-
-    };
-}(jQuery));
-
 Spinach.Common = (function ($) {
     return {
         alert:function (message) {
@@ -239,26 +155,6 @@ Spinach.Map = (function ($) {
     };
 }(jQuery));
 
-Spinach.Accelerometer = (function ($) {
-    var watchID;
-    return {
-        getAcceleration:function (onSuccess, onError) {
-            navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
-        },
-        watchAcceleration:function (onSuccess, onError, options) {
-            watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
-        },
-        clearWatch:function () {
-            $('#startWatchButton').show();
-            $('#clearWatchButton').hide();
-            if (watchID) {
-                navigator.accelerometer.clearWatch(watchID);
-                watchID = null;
-            }
-        }
-    };
-}(jQuery));
-
 Spinach.AccelerationDialog = (function ($) {
     return {
         watchAcceleration:function () {
@@ -391,6 +287,26 @@ Spinach.Capture = (function ($) {
     };
 }(jQuery));
 
+Spinach.Accelerometer = (function ($) {
+    var watchID;
+    return {
+        getAcceleration:function (onSuccess, onError) {
+            navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
+        },
+        watchAcceleration:function (onSuccess, onError, options) {
+            watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
+        },
+        clearWatch:function () {
+            $('#startWatchButton').show();
+            $('#clearWatchButton').hide();
+            if (watchID) {
+                navigator.accelerometer.clearWatch(watchID);
+                watchID = null;
+            }
+        }
+    };
+}(jQuery));
+
 Spinach.Device = (function ($) {
     return {
         Class:Parse.Object.extend("SpinachDevice"),
@@ -404,7 +320,7 @@ Spinach.Device = (function ($) {
             query.first({
                 success:function (spinachDevice) {
                     if (spinachDevice) {
-                        console.log('Successfully retrieved device...');
+                        console.log('Successfully retrieved device...' + JSON.stringify(spinachDevice));
                         Spinach.Device.instance = spinachDevice;
                     } else {
                         console.log('Could not retrieve device... Registering with GCM before add...');
@@ -440,6 +356,89 @@ Spinach.Device = (function ($) {
                     }
                 });
         }
+    };
+}(jQuery));
+
+Spinach.GoogleMaps = (function ($) {
+    return {
+        geocode:function (address, onSuccess, onError) {
+            var geoCoder = new google.maps.Geocoder();
+            geoCoder.geocode({ 'address':address}, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var location = {
+                        longitude:results[0].geometry.location.lng,
+                        latitude:results[0].geometry.location.lat,
+                        address:results[0].formatted_address
+                    };
+                    onSuccess(location);
+                } else {
+                    onError('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        },
+        reverseGeocode:function (latitude, longitude, onSuccess, onError) {
+            var latLong = new google.maps.LatLng(latitude, longitude);
+            var geoCoder = new google.maps.Geocoder();
+            geoCoder.geocode({
+                'latLng':latLong
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    if (results[4]) {
+                        return onSuccess(results[4].formatted_address);
+                    }
+                } else {
+                    onError("reverseGeocode failed due to: " + status);
+                }
+            });
+        }
+    };
+}(jQuery));
+
+Spinach.GCM = (function ($) {
+    return {
+        gcmDeviceId:null,
+        registerSuccess:function (obj) {
+            console.log('Successfully registered. Waiting for GCM callback: ' + JSON.stringify(obj));
+        },
+        registerError:function (error) {
+            console.log('Error in register: ' + JSON.stringify(error));
+        },
+        register:function () {
+            window.GCM.register("237121290143",
+                Spinach.GCM.registerSuccess,
+                Spinach.GCM.registerError);
+        },
+        callback:function (e) {
+            console.log('GCM Event Received: ' + e.event);
+            switch (e.event) {
+                case 'registered':
+                    // the definition of the e variable is json return defined in GCMReceiver.java
+                    // In my case on registered I have EVENT and REGID defined
+                    Spinach.Device.gcmDeviceId = e.regid;
+                    if (Spinach.Device.gcmDeviceId.length > 0) {
+                        console.log('Received GCM Device ID: ' + Spinach.Device.gcmDeviceId);
+                        console.log('Calling \'Spinach.Device.add\' with empty APNS ID and valid GCM Device ID');
+                        Spinach.Device.add('', e.regid);
+                    }
+                    break;
+                case 'message':
+                    // the definition of the e variable is json return defined in GCMReceiver.java
+                    // In my case on registered I have EVENT, MSG and MSGCNT defined
+
+                    // You will NOT receive any messages unless you build a HOST server application to send
+                    // Messages to you, This is just here to show you how it might work
+                    Spinach.Common.alert('Message: ' + e.message);
+                    Spinach.Common.alert('Message Count: ' + e.msgcnt);
+                    break;
+                case 'error':
+                    Spinach.Common.alert('Error: ' + e.msg);
+                    break;
+                default:
+                    Spinach.Common.alert('An unknown event was received: ' + JSON.stringify(e));
+                    break;
+            }
+        }
+
     };
 }(jQuery));
 
