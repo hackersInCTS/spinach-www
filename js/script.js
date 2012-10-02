@@ -408,18 +408,30 @@ Spinach.GCM = (function ($) {
                 Spinach.GCM.registerSuccess,
                 Spinach.GCM.registerError);
         },
+        unRegisterSuccess:function (obj) {
+            console.log('Successfully unregistered. Waiting for GCM callback: ' + JSON.stringify(obj));
+        },
+        unRegisterError:function (error) {
+            console.log('Error in register: ' + JSON.stringify(error));
+        },
+        unRegister:function () {
+            window.GCM.unregister("237121290143",
+                Spinach.GCM.unRegisterSuccess,
+                Spinach.GCM.unRegisterError);
+        },
         callback:function (e) {
             console.log('GCM Event Received: ' + e.event);
             switch (e.event) {
                 case 'registered':
-                    // the definition of the e variable is json return defined in GCMReceiver.java
-                    // In my case on registered I have EVENT and REGID defined
                     Spinach.Device.gcmDeviceId = e.regid;
                     if (Spinach.Device.gcmDeviceId.length > 0) {
                         console.log('Received GCM Device ID: ' + Spinach.Device.gcmDeviceId);
                         console.log('Calling \'Spinach.Device.add\' with empty APNS ID and valid GCM Device ID');
                         Spinach.Device.add('', e.regid);
                     }
+                    break;
+                case 'unregistered':
+                    console.log('Received confirmation on Unregister');
                     break;
                 case 'message':
                     // the definition of the e variable is json return defined in GCMReceiver.java
@@ -428,7 +440,6 @@ Spinach.GCM = (function ($) {
                     // You will NOT receive any messages unless you build a HOST server application to send
                     // Messages to you, This is just here to show you how it might work
                     Spinach.Common.alert('Message: ' + e.message);
-                    Spinach.Common.alert('Message Count: ' + e.msgcnt);
                     break;
                 case 'error':
                     Spinach.Common.alert('Error: ' + e.msg);
@@ -467,4 +478,7 @@ $(document).ready(function () {
     $(document).on('click', '#ShowPhotoCancelButton', Spinach.ShowPhotoDialog.close);
 
     $(document).on('click', '#CaptureAudioButton', Spinach.Capture.captureAudio);
+    
+    $(document).on('click', '#UnregisterGCMButton', Spinach.GCM.unRegister);
+    
 });
