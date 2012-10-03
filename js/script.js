@@ -348,13 +348,24 @@ Spinach.Device = (function ($) {
                 },
                 {
                     success:function (spinachDevice) {
-                        Spinach.Common.alert("Added device...");
+                        console.log("Added device...: " + JSON.stringify(spinachDevice));
                         Spinach.Device.instance = spinachDevice;
+                        Spinach.Common.alert('Added device to database...');
                     },
                     error:function (error) {
                         console.log('Error adding device: ' + JSON.stringify(error));
                     }
                 });
+        },
+        delete:function(){
+			Spinach.Device.instance.destroy({
+			  success: function(spinachDevice) {
+			  	console.log('Device deleted successfully: ' + JSON.stringify(spinachDevice));			    
+			  },
+			  error: function(spinachDevice, error) {
+            	console.log('Error deleting device: ' + JSON.stringify(error));
+			  }
+			});
         }
     };
 }(jQuery));
@@ -415,6 +426,7 @@ Spinach.GCM = (function ($) {
             console.log('Error in register: ' + JSON.stringify(error));
         },
         unRegister:function () {
+        	Spinach.Device.delete();
             window.GCM.unregister("237121290143",
                 Spinach.GCM.unRegisterSuccess,
                 Spinach.GCM.unRegisterError);
@@ -432,14 +444,10 @@ Spinach.GCM = (function ($) {
                     break;
                 case 'unregistered':
                     console.log('Received confirmation on Unregister');
+                    Spinach.Common.alert('Unregistered device successfully.');
                     break;
                 case 'message':
-                    // the definition of the e variable is json return defined in GCMReceiver.java
-                    // In my case on registered I have EVENT, MSG and MSGCNT defined
-
-                    // You will NOT receive any messages unless you build a HOST server application to send
-                    // Messages to you, This is just here to show you how it might work
-                    Spinach.Common.alert('Message: ' + e.message);
+                    Spinach.Common.alert(e.message);
                     break;
                 case 'error':
                     Spinach.Common.alert('Error: ' + e.msg);
