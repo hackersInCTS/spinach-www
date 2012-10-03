@@ -314,19 +314,28 @@ Spinach.Device = (function ($) {
         getDeviceId:function () {
             return device.platform + "_" + device.name + "_" + device.uuid;
         },
+        registerQuerySuccess:function (spinachDevice) {
+            if (spinachDevice) {
+                console.log('Successfully retrieved device... Dummy save' + JSON.stringify(spinachDevice));
+                spinachDevice.save({
+                    success:function(spinachDevice){
+                        console.log('Successfully updated device...' + JSON.stringify(spinachDevice));
+                        Spinach.Device.instance = spinachDevice;
+                    }   ,
+                    error:function(error){
+                        console.log('Error in update-date: ' + JSON.stringify(error));
+                    }
+                });
+            } else {
+                console.log('Could not retrieve device... Registering with GCM before add...');
+                Spinach.GCM.register();
+            }
+        },
         register:function () {
             var query = new Parse.Query(Spinach.Device.Class);
             query.equalTo('deviceId', Spinach.Device.getDeviceId());
             query.first({
-                success:function (spinachDevice) {
-                    if (spinachDevice) {
-                        console.log('Successfully retrieved device...' + JSON.stringify(spinachDevice));
-                        Spinach.Device.instance = spinachDevice;
-                    } else {
-                        console.log('Could not retrieve device... Registering with GCM before add...');
-                        Spinach.GCM.register();
-                    }
-                },
+                success:Spinach.Device.registerQuerySuccess,
                 error:function (error) {
                     console.log('Error in find: ' + JSON.stringify(error));
                 }
@@ -343,8 +352,7 @@ Spinach.Device = (function ($) {
                     uuid:device.uuid,
                     version:device.version,
                     apnsDeviceId:apnsDeviceId,
-                    gcmDeviceId:gcmDeviceId,
-                    dateLastUsed:new Date()
+                    gcmDeviceId:gcmDeviceId
                 },
                 {
                     success:function (spinachDevice) {
@@ -357,15 +365,15 @@ Spinach.Device = (function ($) {
                     }
                 });
         },
-        delete:function(){
-			Spinach.Device.instance.destroy({
-			  success: function(spinachDevice) {
-			  	console.log('Device deleted successfully: ' + JSON.stringify(spinachDevice));			    
-			  },
-			  error: function(spinachDevice, error) {
-            	console.log('Error deleting device: ' + JSON.stringify(error));
-			  }
-			});
+        delete:function () {
+            Spinach.Device.instance.destroy({
+                success:function (spinachDevice) {
+                    console.log('Device deleted successfully: ' + JSON.stringify(spinachDevice));
+                },
+                error:function (spinachDevice, error) {
+                    console.log('Error deleting device: ' + JSON.stringify(error));
+                }
+            });
         }
     };
 }(jQuery));
@@ -426,7 +434,7 @@ Spinach.GCM = (function ($) {
             console.log('Error in register: ' + JSON.stringify(error));
         },
         unRegister:function () {
-        	Spinach.Device.delete();
+            Spinach.Device.delete();
             window.GCM.unregister("237121290143",
                 Spinach.GCM.unRegisterSuccess,
                 Spinach.GCM.unRegisterError);
@@ -486,7 +494,7 @@ $(document).ready(function () {
     $(document).on('click', '#ShowPhotoCancelButton', Spinach.ShowPhotoDialog.close);
 
     $(document).on('click', '#CaptureAudioButton', Spinach.Capture.captureAudio);
-    
+
     $(document).on('click', '#UnregisterGCMButton', Spinach.GCM.unRegister);
-    
+
 });
