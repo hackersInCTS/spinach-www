@@ -25,6 +25,16 @@ Spinach.Common = (function ($) {
             catch (e) {
                 alert(message);
             }
+        },
+        getQueryStringValue:function (name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.search);
+            if (results == null)
+                return "";
+            else
+                return decodeURIComponent(results[1].replace(/\+/g, " "));
         }
     };
 }(jQuery));
@@ -34,6 +44,11 @@ Spinach.Home = (function ($) {
         deviceReady:function () {
             Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
             Spinach.Device.register();
+            var pushedMessage = Spinach.Common.getQueryStringValue("message");
+            console.log(pushedMessage);
+            if (pushedMessage !== "") {
+                Spinach.PushNotification.show(JSON.parse(pushedMessage).message);
+            }
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
@@ -318,11 +333,11 @@ Spinach.Device = (function ($) {
             if (spinachDevice) {
                 console.log('Successfully retrieved device... Dummy save' + JSON.stringify(spinachDevice));
                 spinachDevice.save({
-                    success:function(spinachDevice){
+                    success:function (spinachDevice) {
                         console.log('Successfully updated device...' + JSON.stringify(spinachDevice));
                         Spinach.Device.instance = spinachDevice;
-                    }   ,
-                    error:function(error){
+                    },
+                    error:function (error) {
                         console.log('Error in update-date: ' + JSON.stringify(error));
                     }
                 });
@@ -413,6 +428,14 @@ Spinach.GoogleMaps = (function ($) {
     };
 }(jQuery));
 
+Spinach.PushNotification = (function ($) {
+    return {
+        show:function (message) {
+            Spinach.Common.alert(message);
+        }
+    };
+}(jQuery));
+
 Spinach.GCM = (function ($) {
     return {
         gcmDeviceId:null,
@@ -455,7 +478,7 @@ Spinach.GCM = (function ($) {
                     Spinach.Common.alert('Unregistered device successfully.');
                     break;
                 case 'message':
-                    Spinach.Common.alert(e.message);
+                    Spinach.PushNotification.show(e.message);
                     break;
                 case 'error':
                     Spinach.Common.alert('Error: ' + e.msg);
