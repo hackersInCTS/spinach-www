@@ -14,13 +14,13 @@ var MapViewModel = function () {
 };
 
 //Namespaced JS
-var Spinach = Spinach || {};
+var Swoosh = Swoosh || {};
 
-Spinach.Common = (function ($) {
+Swoosh.Common = (function ($) {
     return {
         alert:function (message) {
             try {
-                navigator.notification.alert(message, $.noop, "Spinach");
+                navigator.notification.alert(message, $.noop, "Swoosh");
             }
             catch (e) {
                 alert(message);
@@ -39,49 +39,49 @@ Spinach.Common = (function ($) {
     };
 }(jQuery));
 
-Spinach.Home = (function ($) {
+Swoosh.Home = (function ($) {
     return {
         deviceReady:function () {
             Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
-            Spinach.Device.register();
-            var pushedMessage = Spinach.Common.getQueryStringValue("message");
+            Swoosh.Device.register();
+            var pushedMessage = Swoosh.Common.getQueryStringValue("jsonData");
             console.log(pushedMessage);
             if (pushedMessage !== "") {
-                Spinach.PushNotification.show(JSON.parse(pushedMessage).message);
+                Swoosh.PushNotification.show(JSON.parse(pushedMessage).message);
             }
         },
         currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
-            Spinach.Home.goToMapPage();
+            Swoosh.Home.goToMapPage();
         },
         goToMapPage:function () {
-            Spinach.Map.resetMaps();
+            Swoosh.Map.resetMaps();
             $.mobile.changePage($('#map'));
         },
         getCurrentAcceleration:function () {
             var alertAcceleration = function (acceleration) {
-                Spinach.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
+                Swoosh.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
                     'Acceleration Y: ' + acceleration.y + '\n' +
                     'Acceleration Z: ' + acceleration.z + '\n' +
                     'Timestamp     : ' + acceleration.timestamp + '\n');
             };
             var alertAccelerationError = function () {
-                Spinach.Common.alert('onError!');
+                Swoosh.Common.alert('onError!');
             };
-            Spinach.Accelerometer.getAcceleration(alertAcceleration, alertAccelerationError);
+            Swoosh.Accelerometer.getAcceleration(alertAcceleration, alertAccelerationError);
         },
         getSpeedAndLocation:function () {
-            Spinach.Map.getSpeedAndLocation();
+            Swoosh.Map.getSpeedAndLocation();
         }
     };
 }(jQuery));
 
-Spinach.LocationDialog = (function ($) {
+Swoosh.LocationDialog = (function ($) {
     return {
         plotSpecificLocationClick:function (e) {
             if ($('#address').val()) {
                 $('#CurrentLocationFlag').val(false);
-                Spinach.Home.goToMapPage();
+                Swoosh.Home.goToMapPage();
             } else {
                 e.preventDefault();
             }
@@ -89,13 +89,13 @@ Spinach.LocationDialog = (function ($) {
     };
 }(jQuery));
 
-Spinach.Map = (function ($) {
+Swoosh.Map = (function ($) {
     return {
         initialize:function () {
             if ($('#CurrentLocationFlag').val() === 'true') {
-                Spinach.Map.getCurrentPositionAndGeocode();
+                Swoosh.Map.getCurrentPositionAndGeocode();
             } else {
-                Spinach.Map.getSpecificLocation();
+                Swoosh.Map.getSpecificLocation();
             }
         },
         resetMaps:function () {
@@ -110,18 +110,18 @@ Spinach.Map = (function ($) {
                 mapViewModel.location = location.latitude + ', ' + location.longitude;
                 mapViewModel.markers = [location.address];
                 $('#LocationMarker').text(location.address);
-                Spinach.Map.plotMap(mapViewModel);
+                Swoosh.Map.plotMap(mapViewModel);
             };
             var onGeocodeError = function (mapViewModel) {
                 return function (errorReason) {
                     console.log(errorReason);
                 };
             };
-            Spinach.GoogleMaps.geocode(userInput, onGeocodeSuccess, onGeocodeError);
+            Swoosh.GoogleMaps.geocode(userInput, onGeocodeSuccess, onGeocodeError);
         },
         getCurrentPosition:function (onSuccess) {
             var onGetPositionError = function (error) {
-                Spinach.Common.alert('Code   : ' + error.code + '\n' +
+                Swoosh.Common.alert('Code   : ' + error.code + '\n' +
                     'Message: ' + error.message + '\n');
             };
             var geoLocationOptions = {
@@ -135,13 +135,13 @@ Spinach.Map = (function ($) {
             var onReverseGeocodeSuccess = function (mapViewModel) {
                 return function (resolvedCity) {
                     $('#LocationMarker').text(resolvedCity);
-                    Spinach.Map.plotMap(mapViewModel);
+                    Swoosh.Map.plotMap(mapViewModel);
                 };
             };
             var onReverseGeocodeError = function (mapViewModel) {
                 return function (errorReason) {
                     console.log(errorReason);
-                    Spinach.Map.plotMap(mapViewModel);
+                    Swoosh.Map.plotMap(mapViewModel);
                 };
             };
             var onGetPositionSuccess = function (position) {
@@ -149,20 +149,20 @@ Spinach.Map = (function ($) {
                 var location = position.coords.latitude + ', ' + position.coords.longitude;
                 mapViewModel.location = location;
                 mapViewModel.markers = [location];
-                Spinach.GoogleMaps.reverseGeocode(position.coords.latitude,
+                Swoosh.GoogleMaps.reverseGeocode(position.coords.latitude,
                     position.coords.longitude,
                     onReverseGeocodeSuccess(mapViewModel),
                     onReverseGeocodeError(mapViewModel));
             };
-            Spinach.Map.getCurrentPosition(onGetPositionSuccess);
+            Swoosh.Map.getCurrentPosition(onGetPositionSuccess);
         },
         getSpeedAndLocation:function () {
             var onGetSpeedAndLocationSuccess = function (position) {
-                Spinach.Common.alert('Latitude : ' + position.coords.latitude + '\n' +
+                Swoosh.Common.alert('Latitude : ' + position.coords.latitude + '\n' +
                     'Longitude: ' + position.coords.longitude + '\n' +
                     'Speed    : ' + position.coords.speed + '\n');
             };
-            Spinach.Map.getCurrentPosition(onGetSpeedAndLocationSuccess);
+            Swoosh.Map.getCurrentPosition(onGetSpeedAndLocationSuccess);
         },
         plotMap:function (mapViewModel) {
             $('#mapPlotImg').attr('src', mapViewModel.getMapUrl());
@@ -170,36 +170,36 @@ Spinach.Map = (function ($) {
     };
 }(jQuery));
 
-Spinach.AccelerationDialog = (function ($) {
+Swoosh.AccelerationDialog = (function ($) {
     return {
         watchAcceleration:function () {
             var interval = parseInt($('#interval :radio:checked').val(), 10);
             var options = { frequency:interval };
             var onSuccess = function (acceleration) {
-                Spinach.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
+                Swoosh.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
                     'Acceleration Y: ' + acceleration.y + '\n' +
                     'Acceleration Z: ' + acceleration.z + '\n' +
                     'Timestamp: ' + acceleration.timestamp + '\n');
             };
             var onError = function (error) {
-                Spinach.Common.alert('error!');
+                Swoosh.Common.alert('error!');
             };
             if (interval) {
                 $('#startWatchButton').hide();
                 $('#clearWatchButton').show();
-                Spinach.Accelerometer.watchAcceleration(onSuccess, onError, options);
+                Swoosh.Accelerometer.watchAcceleration(onSuccess, onError, options);
             }
         }
     };
 }(jQuery));
 
-Spinach.GetPhotoDialog = (function ($) {
+Swoosh.GetPhotoDialog = (function ($) {
     return {
         fromLibrary:function () {
-            Spinach.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.PHOTOLIBRARY);
+            Swoosh.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.PHOTOLIBRARY);
         },
         fromCamera:function () {
-            Spinach.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.CAMERA);
+            Swoosh.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.CAMERA);
         },
         getPhoto:function (sourceType) {
             var destinationType,
@@ -209,7 +209,7 @@ Spinach.GetPhotoDialog = (function ($) {
             } else if (selectedDestinationType === "1") {
                 destinationType = navigator.camera.DestinationType.FILE_URI;
             } else {
-                Spinach.Common.alert('Please select the destination type (\'Data URL\' or \'File URI\')');
+                Swoosh.Common.alert('Please select the destination type (\'Data URL\' or \'File URI\')');
                 return;
             }
             var cameraOptions = {
@@ -243,7 +243,7 @@ Spinach.GetPhotoDialog = (function ($) {
     };
 }(jQuery));
 
-Spinach.ShowPhotoDialog = (function ($) {
+Swoosh.ShowPhotoDialog = (function ($) {
     return {
         close:function () {
             $('#photoDisplay').attr('src', '').hide();
@@ -251,17 +251,17 @@ Spinach.ShowPhotoDialog = (function ($) {
     };
 }(jQuery));
 
-Spinach.QRCodeScanner = (function ($) {
+Swoosh.QRCodeScanner = (function ($) {
     return {
         onScanSuccess:function (results) {
-            Spinach.Common.alert('Scan result: ' + results[0]);
+            Swoosh.Common.alert('Scan result: ' + results[0]);
         },
         onScanCancel:function () {
             console.log('QR Code Scan canceled.');
         },
         scan:function () {
-            scanditSDK.scan(Spinach.QRCodeScanner.onScanSuccess,
-                Spinach.QRCodeScanner.onScanCancel,
+            scanditSDK.scan(Swoosh.QRCodeScanner.onScanSuccess,
+                Swoosh.QRCodeScanner.onScanCancel,
                 "4ABoYAsrEeKA+T2bxul+mhOXR7pIOLby9vVmgFSTTOw",
                 {
                     'beep':true,
@@ -276,7 +276,7 @@ Spinach.QRCodeScanner = (function ($) {
     };
 }(jQuery));
 
-Spinach.Capture = (function ($) {
+Swoosh.Capture = (function ($) {
     return {
         getFormatDataSuccess:function (mediaFileData) {
             console.log('Media File Data: ' + JSON.stringify(mediaFileData));
@@ -286,15 +286,15 @@ Spinach.Capture = (function ($) {
         },
         captureAudioSuccess:function (mediaFile) {
             console.log('Media File: ' + JSON.stringify(mediaFile));
-            mediaFile.getFormatData(Spinach.Capture.getFormatDataSuccess, Spinach.Capture.getFormatDataError);
+            mediaFile.getFormatData(Swoosh.Capture.getFormatDataSuccess, Swoosh.Capture.getFormatDataError);
         },
         captureAudioError:function (error) {
             console.log('Error in CaptureAudio function: ' + JSON.stringify(error));
         },
         captureAudio:function () {
             navigator.device.capture.captureAudio(
-                Spinach.Capture.captureAudioSuccess,
-                Spinach.Capture.captureAudioError,
+                Swoosh.Capture.captureAudioSuccess,
+                Swoosh.Capture.captureAudioError,
                 {
                     limit:1
                 });
@@ -302,7 +302,7 @@ Spinach.Capture = (function ($) {
     };
 }(jQuery));
 
-Spinach.Accelerometer = (function ($) {
+Swoosh.Accelerometer = (function ($) {
     var watchID;
     return {
         getAcceleration:function (onSuccess, onError) {
@@ -322,9 +322,9 @@ Spinach.Accelerometer = (function ($) {
     };
 }(jQuery));
 
-Spinach.Device = (function ($) {
+Swoosh.Device = (function ($) {
     return {
-        Class:Parse.Object.extend("SpinachDevice"),
+        Class:Parse.Object.extend("SwooshDevice"),
         instance:null,
         getDeviceId:function () {
             return device.platform + "_" + device.name + "_" + device.uuid;
@@ -335,32 +335,35 @@ Spinach.Device = (function ($) {
                 spinachDevice.save({
                     success:function (spinachDevice) {
                         console.log('Successfully updated device...' + JSON.stringify(spinachDevice));
-                        Spinach.Device.instance = spinachDevice;
+                        Swoosh.Device.instance = spinachDevice;
+                        navigator.splashscreen.hide();
                     },
                     error:function (error) {
                         console.log('Error in update-date: ' + JSON.stringify(error));
+                        navigator.splashscreen.hide();
                     }
                 });
             } else {
                 console.log('Could not retrieve device... Registering with GCM before add...');
-                Spinach.GCM.register();
+                Swoosh.GCM.register();
             }
         },
         register:function () {
-            var query = new Parse.Query(Spinach.Device.Class);
-            query.equalTo('deviceId', Spinach.Device.getDeviceId());
+            var query = new Parse.Query(Swoosh.Device.Class);
+            query.equalTo('deviceId', Swoosh.Device.getDeviceId());
             query.first({
-                success:Spinach.Device.registerQuerySuccess,
+                success:Swoosh.Device.registerQuerySuccess,
                 error:function (error) {
                     console.log('Error in find: ' + JSON.stringify(error));
+                    navigator.splashscreen.hide();
                 }
             });
         },
         add:function (apnsDeviceId, gcmDeviceId) {
-            var spinachDevice = new Spinach.Device.Class();
+            var spinachDevice = new Swoosh.Device.Class();
             spinachDevice.save(
                 {
-                    deviceId:Spinach.Device.getDeviceId(),
+                    deviceId:Swoosh.Device.getDeviceId(),
                     name:device.name,
                     cordova:device.cordova,
                     platform:device.platform,
@@ -372,16 +375,18 @@ Spinach.Device = (function ($) {
                 {
                     success:function (spinachDevice) {
                         console.log("Added device...: " + JSON.stringify(spinachDevice));
-                        Spinach.Device.instance = spinachDevice;
-                        Spinach.Common.alert('Added device to database...');
+                        Swoosh.Device.instance = spinachDevice;
+                        Swoosh.Common.alert('Added device to database...');
+                        navigator.splashscreen.hide();
                     },
                     error:function (error) {
                         console.log('Error adding device: ' + JSON.stringify(error));
+                        navigator.splashscreen.hide();
                     }
                 });
         },
         delete:function () {
-            Spinach.Device.instance.destroy({
+            Swoosh.Device.instance.destroy({
                 success:function (spinachDevice) {
                     console.log('Device deleted successfully: ' + JSON.stringify(spinachDevice));
                 },
@@ -393,7 +398,7 @@ Spinach.Device = (function ($) {
     };
 }(jQuery));
 
-Spinach.GoogleMaps = (function ($) {
+Swoosh.GoogleMaps = (function ($) {
     return {
         geocode:function (address, onSuccess, onError) {
             var geoCoder = new google.maps.Geocoder();
@@ -428,15 +433,15 @@ Spinach.GoogleMaps = (function ($) {
     };
 }(jQuery));
 
-Spinach.PushNotification = (function ($) {
+Swoosh.PushNotification = (function ($) {
     return {
         show:function (message) {
-            Spinach.Common.alert(message);
+            Swoosh.Common.alert(message);
         }
     };
 }(jQuery));
 
-Spinach.GCM = (function ($) {
+Swoosh.GCM = (function ($) {
     return {
         gcmDeviceId:null,
         registerSuccess:function (obj) {
@@ -444,47 +449,48 @@ Spinach.GCM = (function ($) {
         },
         registerError:function (error) {
             console.log('Error in register: ' + JSON.stringify(error));
+            navigator.splashscreen.hide();
         },
         register:function () {
             window.GCM.register("237121290143",
-                Spinach.GCM.registerSuccess,
-                Spinach.GCM.registerError);
+                Swoosh.GCM.registerSuccess,
+                Swoosh.GCM.registerError);
         },
         unRegisterSuccess:function (obj) {
             console.log('Successfully unregistered. Waiting for GCM callback: ' + JSON.stringify(obj));
         },
         unRegisterError:function (error) {
-            console.log('Error in register: ' + JSON.stringify(error));
+            console.log('Error in unregister: ' + JSON.stringify(error));
         },
         unRegister:function () {
-            Spinach.Device.delete();
+            Swoosh.Device.delete();
             window.GCM.unregister("237121290143",
-                Spinach.GCM.unRegisterSuccess,
-                Spinach.GCM.unRegisterError);
+                Swoosh.GCM.unRegisterSuccess,
+                Swoosh.GCM.unRegisterError);
         },
         callback:function (e) {
             console.log('GCM Event Received: ' + e.event);
             switch (e.event) {
                 case 'registered':
-                    Spinach.Device.gcmDeviceId = e.regid;
-                    if (Spinach.Device.gcmDeviceId.length > 0) {
-                        console.log('Received GCM Device ID: ' + Spinach.Device.gcmDeviceId);
-                        console.log('Calling \'Spinach.Device.add\' with empty APNS ID and valid GCM Device ID');
-                        Spinach.Device.add('', e.regid);
+                    Swoosh.Device.gcmDeviceId = e.regid;
+                    if (Swoosh.Device.gcmDeviceId.length > 0) {
+                        console.log('Received GCM Device ID: ' + Swoosh.Device.gcmDeviceId);
+                        console.log('Calling \'Swoosh.Device.add\' with empty APNS ID and valid GCM Device ID');
+                        Swoosh.Device.add('', e.regid);
                     }
                     break;
                 case 'unregistered':
                     console.log('Received confirmation on Unregister');
-                    Spinach.Common.alert('Unregistered device successfully.');
+                    Swoosh.Common.alert('Unregistered device successfully.');
                     break;
                 case 'message':
-                    Spinach.PushNotification.show(e.message);
+                    Swoosh.PushNotification.show(e.message);
                     break;
                 case 'error':
-                    Spinach.Common.alert('Error: ' + e.msg);
+                    Swoosh.Common.alert('Error: ' + e.msg);
                     break;
                 default:
-                    Spinach.Common.alert('An unknown event was received: ' + JSON.stringify(e));
+                    Swoosh.Common.alert('An unknown event was received: ' + JSON.stringify(e));
                     break;
             }
         }
@@ -494,30 +500,30 @@ Spinach.GCM = (function ($) {
 
 //Page specific initialize events
 $(document).on("pageshow", "#map", function () {
-    Spinach.Map.initialize();
+    Swoosh.Map.initialize();
 });
 
 //Document initialize events
 $(document).ready(function () {
-    $(document).on('deviceready', Spinach.Home.deviceReady);
-    $(document).on('click', '#CurrentLocation', Spinach.Home.currentLocationClick);
-    $(document).on('click', '#GetSpeedAndLocation', Spinach.Home.getSpeedAndLocation);
-    $(document).on('click', '#GetAcceleration', Spinach.Home.getCurrentAcceleration);
+    $(document).on('deviceready', Swoosh.Home.deviceReady);
+    $(document).on('click', '#CurrentLocation', Swoosh.Home.currentLocationClick);
+    $(document).on('click', '#GetSpeedAndLocation', Swoosh.Home.getSpeedAndLocation);
+    $(document).on('click', '#GetAcceleration', Swoosh.Home.getCurrentAcceleration);
 
-    $(document).on('click', '#PlotSpecificLocationButton', Spinach.LocationDialog.plotSpecificLocationClick);
+    $(document).on('click', '#PlotSpecificLocationButton', Swoosh.LocationDialog.plotSpecificLocationClick);
 
-    $(document).on('click', '#startWatchButton', Spinach.AccelerationDialog.watchAcceleration);
-    $(document).on('click', '#clearWatchButton', Spinach.Accelerometer.clearWatch);
+    $(document).on('click', '#startWatchButton', Swoosh.AccelerationDialog.watchAcceleration);
+    $(document).on('click', '#clearWatchButton', Swoosh.Accelerometer.clearWatch);
 
-    $(document).on('click', '#ScanQRCodeButton', Spinach.QRCodeScanner.scan);
+    $(document).on('click', '#ScanQRCodeButton', Swoosh.QRCodeScanner.scan);
 
-    $(document).on('click', '#FromLibraryButton', Spinach.GetPhotoDialog.fromLibrary);
-    $(document).on('click', '#FromCameraButton', Spinach.GetPhotoDialog.fromCamera);
+    $(document).on('click', '#FromLibraryButton', Swoosh.GetPhotoDialog.fromLibrary);
+    $(document).on('click', '#FromCameraButton', Swoosh.GetPhotoDialog.fromCamera);
 
-    $(document).on('click', '#ShowPhotoCancelButton', Spinach.ShowPhotoDialog.close);
+    $(document).on('click', '#ShowPhotoCancelButton', Swoosh.ShowPhotoDialog.close);
 
-    $(document).on('click', '#CaptureAudioButton', Spinach.Capture.captureAudio);
+    $(document).on('click', '#CaptureAudioButton', Swoosh.Capture.captureAudio);
 
-    $(document).on('click', '#UnregisterGCMButton', Spinach.GCM.unRegister);
+    $(document).on('click', '#UnregisterGCMButton', Swoosh.GCM.unRegister);
 
 });
