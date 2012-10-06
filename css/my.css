@@ -9,8 +9,26 @@
     vertical-align: middle;
 }
 
-#scanButtonContainer {
+.bigButtonContainer {
     text-align: center;
+}
+
+div[data-role="navigation"] {
+    position: relative;
+    bottom: 0;
+}
+
+div[data-role="navigation"] > div {
+    display: inline;
+}
+
+div[data-role="navigation"] > a {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.forwardButton {
+    float: right;
 }
 
 #noBarCodeContainer {

@@ -499,6 +499,17 @@ Swoosh.GCM = (function ($) {
     };
 }(jQuery));
 
+Swoosh.Navigation = (function ($) {
+    return {
+        lossDetailForward:function(){
+            $.mobile.changePage($('#addPhoto'));
+        },
+        addPhotoBack:function(){
+            $.mobile.changePage($('#lossDetail'));
+        }
+    };
+}(jQuery));
+
 //Page specific initialize events
 $(document).on("pageshow", "#map", function () {
     Swoosh.Map.initialize();
@@ -506,6 +517,7 @@ $(document).on("pageshow", "#map", function () {
 
 //Document initialize events
 $(document).ready(function () {
+    /* OLD STUFF
     $(document).on('deviceready', Swoosh.Home.deviceReady);
     $(document).on('click', '#CurrentLocation', Swoosh.Home.currentLocationClick);
     $(document).on('click', '#GetSpeedAndLocation', Swoosh.Home.getSpeedAndLocation);
@@ -516,9 +528,6 @@ $(document).ready(function () {
     $(document).on('click', '#startWatchButton', Swoosh.AccelerationDialog.watchAcceleration);
     $(document).on('click', '#clearWatchButton', Swoosh.Accelerometer.clearWatch);
 
-    $(document).on('click', '#ScanButton', Swoosh.QRCodeScanner.scan);
-    $(document).on('click', '#noBarCodeButton', $.noop);
-
     $(document).on('click', '#FromLibraryButton', Swoosh.GetPhotoDialog.fromLibrary);
     $(document).on('click', '#FromCameraButton', Swoosh.GetPhotoDialog.fromCamera);
 
@@ -527,5 +536,17 @@ $(document).ready(function () {
     $(document).on('click', '#CaptureAudioButton', Swoosh.Capture.captureAudio);
 
     $(document).on('click', '#UnregisterGCMButton', Swoosh.GCM.unRegister);
+    */
 
+    $(document).on('click', '#ScanButton', Swoosh.QRCodeScanner.scan);
+    $(document).on('click', '#noBarCodeButton', $.noop);
+
+    $(document).on('click', '#lossDetailForward', Swoosh.Navigation.lossDetailForward);
+    $(document).on('click', '#addPhotoBack', Swoosh.Navigation.addPhotoBack);
+
+});
+
+$(document).delegate('#page_name', 'pageshow', function () {
+    var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
+    $(this).height($(window).height()).find('[data-role="content"]').height(the_height);
 });
