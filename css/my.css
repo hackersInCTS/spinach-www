@@ -5,6 +5,19 @@
     text-align: center;
 }
 
+#swooshLogo img {
+    vertical-align: middle;
+}
+
+#scanButtonContainer {
+    text-align: center;
+}
+
+#noBarCodeContainer {
+    text-align: center;
+    font-size: smaller;
+}
+
 .text-align-center {
     text-align: center;
 }
