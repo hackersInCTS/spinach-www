@@ -14,7 +14,7 @@
 
 <!-- Start of index page -->
 <div data-role="page" id="index">
-    <div id="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
+    <div class="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
         <h3>
             <img src="css/images/swoosh.png"/>
             <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
@@ -42,90 +42,17 @@
 </div>
 <!-- /page -->
 
-<!-- Start of old index page -->
-<div data-role="page" id="oldIndex">
-    <div data-theme="a" data-role="header" data-position="fixed">
+<!-- Start of index page -->
+<div data-role="page" id="lossDetail">
+    <div class="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
         <h3>
-            Swoosh
+            <img src="css/images/swoosh.png"/>
+            <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-        <div data-role="collapsible-set" data-theme="d" data-content-theme="d">
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>
-                    Camera
-                </h3>
-                <a data-role="button" data-transition="none" data-theme="b" href="#getPhotoDialog" data-icon="star"
-                   data-rel="dialog" data-iconpos="left">
-                    Get Picture
-                </a>
-            </div>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>
-                    Audio &amp; Video Capture
-                </h3>
-                <a data-role="button" data-transition="none" data-theme="e" href="#" data-icon="star"
-                   data-iconpos="left" id="CaptureAudioButton">
-                    Capture Audio
-                </a>
-                <a data-role="button" data-transition="none" data-theme="b" href="#" data-icon="star"
-                   data-iconpos="left">
-                    Capture Video
-                </a>
-            </div>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>
-                    Geo Location
-                </h3>
-                <a data-role="button" data-transition="none" data-theme="b" data-icon="info" href="#locationDialog"
-                   data-rel="dialog" data-iconpos="left">
-                    Plot specified location
-                </a>
-                <a id="CurrentLocation" data-role="button" data-transition="none" data-theme="e" data-icon="info"
-                   data-iconpos="left">
-                    Plot current location
-                </a>
-                <a id="GetSpeedAndLocation" data-role="button" data-transition="none" data-theme="c" data-icon="info"
-                   data-iconpos="left">
-                    Get Speed And Location
-                </a>
-            </div>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>
-                    Accelerometer
-                </h3>
-                <a data-role="button" data-transition="none" data-theme="e" data-icon="gear" href="#accelerationDialog"
-                   data-rel="dialog" data-iconpos="left">
-                    Watch Acceleration
-                </a>
-                <a data-role="button" data-transition="none" data-theme="b" data-icon="gear"
-                   data-iconpos="left" id="GetAcceleration">
-                    Get Acceleration
-                </a>
-            </div>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>
-                    QR Code Scanner
-                </h3>
-                <a data-role="button" data-transition="none" data-theme="e" data-icon="search"
-                   data-iconpos="left" id="ScanQRCodeButton">
-                    Scan QR Code
-                </a>
-            </div>
-            <div data-role="collapsible" data-collapsed="true">
-                <h3>
-                    Google Cloud Messaging
-                </h3>
-                <a data-role="button" data-transition="none" data-theme="e" data-icon="search"
-                   data-iconpos="left" id="UnregisterGCMButton">
-                    Unregister from GCM
-                </a>
-            </div>
-        </div>
-        <div>
-            <a href="https://github.com/hackersInCTS/spinach-android" target="_blank" data-transition="flip">
-                Fork us on Github
-            </a>
+        <div id="scannedData">
+
         </div>
     </div>
     <div data-theme="a" data-role="footer" data-position="fixed">
@@ -136,179 +63,6 @@
 </div>
 <!-- /page -->
 
-<!-- Start of map page -->
-<div data-role="page" id="map">
-    <div data-theme="a" data-role="header" data-position="fixed">
-        <h3>
-            Map
-        </h3>
-    </div>
-    <div data-role="content" style="padding: 15px">
-        <div>
-            <input id="CurrentLocationFlag" type="hidden">
-            <img id="mapPlotImg" src=""/>
-            <h4 id="LocationMarker"></h4>
-        </div>
-        <div>
-            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
-               data-icon="back" data-iconpos="left">
-                Back
-            </a>
-        </div>
-    </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h5>
-            © Hackers in CTS
-        </h5>
-    </div>
-</div>
-<!-- /page -->
-
-<!-- Start of Location Dialog -->
-<div data-role="page" id="locationDialog">
-    <div data-theme="a" data-role="header" data-position="fixed">
-        <h3>
-            Address
-        </h3>
-    </div>
-    <div data-role="content" style="padding: 15px">
-        <div data-role="fieldcontain" class="ui-hide-label">
-            <fieldset data-role="controlgroup" data-mini="true">
-                <label for="address">
-                    Address
-                </label>
-                <input name="address" id="address" placeholder="500 Frank W. Burr Blvd Teaneck NJ 07666"
-                       value="" type="text">
-            </fieldset>
-        </div>
-        <div>
-            <a data-role="button" data-inline="true" data-transition="none" data-theme="e" href="#" data-icon="check"
-               data-iconpos="left" id="PlotSpecificLocationButton">
-                Plot
-            </a>
-            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" data-icon="back"
-               data-iconpos="left">
-                Cancel
-            </a>
-        </div>
-    </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h5>
-            © Hackers in CTS
-        </h5>
-    </div>
-</div>
-<!-- /page -->
-
-<!-- Start of Acceleration dialog -->
-<div data-role="page" id="accelerationDialog">
-    <div data-theme="a" data-role="header" data-position="fixed">
-        <h3>
-            Acceleration
-        </h3>
-    </div>
-    <div data-role="content" style="padding: 15px">
-        <div data-role="fieldcontain">
-            <fieldset data-role="controlgroup" data-type="vertical" id="interval">
-                <legend>
-                    Interval:
-                </legend>
-                <input name="interval" id="onesecond" value="1000" type="radio">
-                <label for="onesecond">
-                    1 s
-                </label>
-                <input name="interval" id="twoseconds" value="2000" type="radio">
-                <label for="twoseconds">
-                    2 s
-                </label>
-                <input name="interval" id="threeseconds" value="3000" type="radio">
-                <label for="threeseconds">
-                    3 s
-                </label>
-            </fieldset>
-        </div>
-        <div>
-            <a data-role="button" data-inline="true" data-transition="none" data-icon="grid"
-               id="startWatchButton">
-                Start Watch
-            </a>
-            <a data-role="button" data-inline="true" data-transition="none" data-icon="delete"
-               id="clearWatchButton" style="display: none;">
-                Clear Watch
-            </a>
-            <a data-role="button" data-rel="back" data-inline="true" data-transition="none"
-               data-icon="back" data-iconpos="left">
-                Back
-            </a>
-        </div>
-    </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h5>
-            © Hackers in CTS
-        </h5>
-    </div>
-</div>
-<!-- /page -->
-
-<!-- Start of GetPhoto dialog -->
-<div data-role="page" id="getPhotoDialog">
-    <div data-theme="a" data-role="header" data-position="fixed">
-        <h3>
-            Get Photo
-        </h3>
-    </div>
-    <div data-role="content" style="padding: 15px">
-        <fieldset id="destinationType" data-role="controlgroup" data-type="horizontal" data-mini="true">
-            <legend>
-                Get Photo as:
-            </legend>
-            <input name="destinationType" id="dataUrl" value="0" type="radio">
-            <label for="dataUrl">
-                Data URL
-            </label>
-            <input name="destinationType" id="fileUri" value="1" type="radio">
-            <label for="fileUri">
-                File URI
-            </label>
-        </fieldset>
-        <a data-role="button" data-transition="none" data-theme="b" data-icon="star" data-iconpos="right"
-           id="FromLibraryButton">
-            From Library
-        </a>
-        <a data-role="button" data-transition="none" data-theme="e" data-icon="gear" data-iconpos="right"
-           id="FromCameraButton">
-            From Camera
-        </a>
-        <a data-role="button" data-transition="none" data-rel="back" data-icon="back" data-iconpos="right">
-            Cancel
-        </a>
-    </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h5>
-            © Hackers in CTS
-        </h5>
-    </div>
-</div>
-<!-- /page -->
-
-<!-- Start of ShowPhoto dialog -->
-<div data-role="page" id="showPhotoDialog">
-    <div data-role="content" style="padding: 15px">
-        <div id="photoContainer">
-            <img id="photoDisplay" src=""/>
-        </div>
-        <a data-role="button" data-transition="none" data-icon="back" data-rel="back" data-iconpos="left"
-           id="ShowPhotoCancelButton">
-            Back
-        </a>
-    </div>
-</div>
-<!-- /page -->
-
-<!--<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>-->
-<!--<script>window.jQuery || document.write('<script src="js/lib/jquery-1.8.2.min.js"><\/script>')</script>-->
-<!--<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>-->
-<!--<script>window.jQuery.mobile || document.write('<script src="js/lib/jquery.mobile-1.2.0.min.js"><\/script>')</script>-->
 <script src="js/lib/jquery-1.8.2.min.js"></script>
 <script src="js/lib/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" src="js/lib/parse-1.1.4.js"></script>

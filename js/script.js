@@ -254,7 +254,8 @@ Swoosh.ShowPhotoDialog = (function ($) {
 Swoosh.QRCodeScanner = (function ($) {
     return {
         onScanSuccess:function (results) {
-            Swoosh.Common.alert('Scan result: ' + results[0]);
+            $('#scannedData').text(results[0]);
+            $.mobile.changePage($('#lossDetail'));
         },
         onScanCancel:function () {
             console.log('QR Code Scan canceled.');
@@ -515,7 +516,8 @@ $(document).ready(function () {
     $(document).on('click', '#startWatchButton', Swoosh.AccelerationDialog.watchAcceleration);
     $(document).on('click', '#clearWatchButton', Swoosh.Accelerometer.clearWatch);
 
-    $(document).on('click', '#ScanQRCodeButton', Swoosh.QRCodeScanner.scan);
+    $(document).on('click', '#ScanButton', Swoosh.QRCodeScanner.scan);
+    $(document).on('click', '#noBarCodeButton', $.noop);
 
     $(document).on('click', '#FromLibraryButton', Swoosh.GetPhotoDialog.fromLibrary);
     $(document).on('click', '#FromCameraButton', Swoosh.GetPhotoDialog.fromCamera);
