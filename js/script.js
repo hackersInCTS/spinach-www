@@ -386,7 +386,7 @@ Swoosh.Device = (function ($) {
                     }
                 });
         },
-        delete:function () {
+        remove:function () {
             Swoosh.Device.instance.destroy({
                 success:function (spinachDevice) {
                     console.log('Device deleted successfully: ' + JSON.stringify(spinachDevice));
@@ -464,7 +464,7 @@ Swoosh.GCM = (function ($) {
             console.log('Error in unregister: ' + JSON.stringify(error));
         },
         unRegister:function () {
-            Swoosh.Device.delete();
+            Swoosh.Device.remove();
             window.GCM.unregister("237121290143",
                 Swoosh.GCM.unRegisterSuccess,
                 Swoosh.GCM.unRegisterError);
@@ -501,6 +501,9 @@ Swoosh.GCM = (function ($) {
 
 Swoosh.Navigation = (function ($) {
     return {
+        noBarCodeButton:function(){
+            $.mobile.changePage($('#lossDetail'));
+        },
         lossDetailForward:function(){
             $.mobile.changePage($('#addPhoto'));
         },
@@ -539,7 +542,7 @@ $(document).ready(function () {
     */
 
     $(document).on('click', '#ScanButton', Swoosh.QRCodeScanner.scan);
-    $(document).on('click', '#noBarCodeButton', $.noop);
+    $(document).on('click', '#noBarCodeButton', Swoosh.Navigation.noBarCodeButton);
 
     $(document).on('click', '#lossDetailForward', Swoosh.Navigation.lossDetailForward);
     $(document).on('click', '#addPhotoBack', Swoosh.Navigation.addPhotoBack);
