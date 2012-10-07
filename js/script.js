@@ -134,8 +134,9 @@ Swoosh.Map = (function ($) {
         },
         getCurrentPosition:function (onSuccess) {
             var onGetPositionError = function (error) {
-                Swoosh.Common.alert('Code   : ' + error.code + '\n' +
-                    'Message: ' + error.message + '\n');
+                //Swoosh.Common.alert('Code   : ' + error.code + '\n' +  'Message: ' + error.message + '\n');
+				$('#currentAddress').val("Manchester CT-06040");				
+				$('#currentLocation').val("1.2344444,2.33333333");
             };
             var geoLocationOptions = {
                 maximumAge:1000,
