@@ -40,6 +40,18 @@ Swoosh.Common = (function ($) {
             var the_height = ($(window).height() - me.find('[data-role="header"]').height() - me.find('[data-role="footer"]').height());
             me.height($(window).height());
             me.find('[data-role="content"]').height(the_height);
+        },
+		populateDropDown:function (dropdownId, items, selectedValue) {
+            var dropdown = $(dropdownId);
+            $(items).each(function (index, value) {
+                    if (value === selectedValue) {
+                        dropdown.append($("<option />").val(value).text(value)).attr('selected', true);
+                    }
+                    else {
+                        dropdown.append($("<option />").val(value).text(value));
+                    }
+                }
+            );
         }
     };
 }(jQuery));
@@ -260,7 +272,8 @@ Swoosh.QRCodeScanner = (function ($) {
     return {
         onScanSuccess:function (results) {
             console.log(results[0]);
-            $('#scannedData').text(results[0]);
+            //$('#scannedData').text(results[0]);
+			Swoosh.LossDetails.setScannedText(results[0]);
             $.mobile.changePage($('#lossDetail'));
         },
         onScanCancel:function () {
@@ -372,6 +385,52 @@ Swoosh.Capture.Image = (function ($) {
         }
     };
 }(jQuery));
+
+Swoosh.LossDetails = (function ($) {
+    var scannedText;    
+
+    return {
+        setScannedText:function (text) {   		
+			var position=text.indexOf('?');
+			scannedText=text.substring(position,text.length);
+			position=scannedText.indexOf('?policyData=')+12;
+			scannedText=scannedText.substring(position,scannedText.length);			
+			Swoosh.LossDetails.populatePolicyData();
+        },
+		populatePolicyData:function () {
+        var policyData = $.parseJSON(scannedText);
+            $('#PolicyKey').text(policyData.PolicyKey);
+            $('#VehicleMake').text(policyData.VehicleMake);
+            $('#VehicleModel').text(policyData.VehicleModel);
+            $('#VehicleVIN').text(policyData.VehicleVIN);
+            $('#VehicleColor').text(policyData.VehicleColor);
+
+            Swoosh.Common.populateDropDown('#select-choice-driver', policyData.Driver, policyData.PrimaryInsured);
+            //$('#select-choice-driver option:eq(' + policyData.PrimaryInsured + ')').prop('selected', true);
+            //$('#select-choice-driver').val(policyData.PrimaryInsured);
+
+            var d = new Date();
+            var dayIndex = d.getDate() + "";
+            var monthIndex = d.getMonth() + "";
+            var yearIndex = d.getFullYear() + "";
+            var hourIndex = d.getHours() + "";
+            var minuteIndex = d.getMinutes() + "";
+
+            $('#select-choice-day option:eq(' + dayIndex + ')').prop('selected', true);
+            $('#select-choice-month option:eq(' + monthIndex + ')').prop('selected', true);
+            $('#select-choice-year option[value="' + yearIndex + '"]').prop('selected', true);
+
+            $('#select-choice-hour option[value="' + hourIndex + '"]').prop('selected', true);
+            $('#select-choice-minute option[value="' + minuteIndex + '"]').prop('selected', true);
+        },
+        clearImages:function () {
+            images = [];
+        },
+        getImages:function () {
+            return images;
+        }
+    };
+}(jQuery))
 
 Swoosh.Accelerometer = (function ($) {
     var watchID;
