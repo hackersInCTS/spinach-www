@@ -135,8 +135,8 @@ Swoosh.Map = (function ($) {
         getCurrentPosition:function (onSuccess) {
             var onGetPositionError = function (error) {
                 //Swoosh.Common.alert('Code   : ' + error.code + '\n' +  'Message: ' + error.message + '\n');
-				$('#currentAddress').val("Manchester CT-06040");				
-				$('#currentLocation').val("1.2344444,2.33333333");
+                $('#currentAddress').val("Manchester CT-06040");
+                $('#currentLocation').val("1.2344444,2.33333333");
             };
             var geoLocationOptions = {
                 maximumAge:1000,
@@ -698,7 +698,7 @@ Swoosh.Submit = (function ($) {
                 },
                 {
                     success:function (lossDetailsInstance) {
-                        Spinach.Common.alert("Thank you! Your claim information has been updated!");
+                        Swoosh.Common.alert("Thank you! Your claim information has been updated!");
                         $.mobile.changePage($('#index'));
                     },
                     error:function (error) {
@@ -706,8 +706,7 @@ Swoosh.Submit = (function ($) {
                         $.mobile.changePage($('#index'));
                     }
                 });
-        },
-
+        }
     };
 }(jQuery));
 
