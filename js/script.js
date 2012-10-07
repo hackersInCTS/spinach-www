@@ -53,7 +53,6 @@ Swoosh.Common = (function ($) {
                     }
                 }
             );
-            dropdown.selectmenu("refresh", true);
         }
     };
 }(jQuery));
