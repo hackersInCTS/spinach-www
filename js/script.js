@@ -36,12 +36,12 @@ Swoosh.Common = (function ($) {
             else
                 return decodeURIComponent(results[1].replace(/\+/g, " "));
         },
-        adjustHeights:function(me){
+        adjustHeights:function (me) {
             var the_height = ($(window).height() - me.find('[data-role="header"]').height() - me.find('[data-role="footer"]').height());
-            me.height($(window).height());
+            //me.height($(window).height());
             me.find('[data-role="content"]').height(the_height);
         },
-		populateDropDown:function (dropdownId, items, selectedValue) {
+        populateDropDown:function (dropdownId, items, selectedValue) {
             var dropdown = $(dropdownId);
             $(items).each(function (index, value) {
                     if (value === selectedValue) {
@@ -272,8 +272,7 @@ Swoosh.QRCodeScanner = (function ($) {
     return {
         onScanSuccess:function (results) {
             console.log(results[0]);
-            //$('#scannedData').text(results[0]);
-			Swoosh.LossDetails.setScannedText(results[0]);
+            Swoosh.LossDetails.setScannedText(results[0]);
             $.mobile.changePage($('#lossDetail'));
         },
         onScanCancel:function () {
@@ -341,7 +340,7 @@ Swoosh.Capture.Image = (function ($) {
             columnDiv = $("<div class='ui-block-b'></div>").appendTo("#thumbnailContainer");
         }
 
-        var anchor = $('<a data-rel="popup" data-position-to="window" data-transition="fade" href="#imagePreview"></a>').appendTo(columnDiv).on({ click: showImagePreview });
+        var anchor = $('<a data-rel="popup" data-position-to="window" data-transition="fade" href="#imagePreview"></a>').appendTo(columnDiv).on({ click:showImagePreview });
         $("<img>").appendTo(anchor).attr("src", imagePath).width(thumbnailSize());
     };
 
@@ -387,18 +386,16 @@ Swoosh.Capture.Image = (function ($) {
 }(jQuery));
 
 Swoosh.LossDetails = (function ($) {
-    var scannedText;    
-
     return {
-        setScannedText:function (text) {   		
-			var position=text.indexOf('?');
-			scannedText=text.substring(position,text.length);
-			position=scannedText.indexOf('?policyData=')+12;
-			scannedText=scannedText.substring(position,scannedText.length);			
-			Swoosh.LossDetails.populatePolicyData();
+        setScannedText:function (text) {
+            var position = text.indexOf('?policyJson=') + 12;
+            console.log(position.toString());
+            var scannedText = text.substring(position, text.length);
+            console.log(scannedText);
+            Swoosh.LossDetails.populatePolicyData(scannedText);
         },
-		populatePolicyData:function () {
-        var policyData = $.parseJSON(scannedText);
+        populatePolicyData:function (scannedText) {
+            var policyData = $.parseJSON(scannedText);
             $('#PolicyKey').text(policyData.PolicyKey);
             $('#VehicleMake').text(policyData.VehicleMake);
             $('#VehicleModel').text(policyData.VehicleModel);
@@ -630,11 +627,11 @@ Swoosh.GCM = (function ($) {
 
 Swoosh.Navigation = (function ($) {
     return {
-        showHideButtons:function(page){
-            $('div[data-role="navigation"]').each(function(){
+        showHideButtons:function (page) {
+            $('div[data-role="navigation"]').each(function () {
                 $(this).hide();
             });
-            window.setTimeout(function(){
+            window.setTimeout(function () {
                 page.find('div[data-role="navigation"]').show('slow');
             }, 500);
 
@@ -671,7 +668,7 @@ Swoosh.Navigation = (function ($) {
         addAudioForward:function () {
             $.mobile.changePage($('#summaryPage'));
         },
-        summaryPageBack:function(){
+        summaryPageBack:function () {
             $.mobile.changePage($('#addAudio'));
         }
     };
@@ -730,15 +727,15 @@ $(document).delegate('div[data-role="page"]', 'pageshow', function () {
     Swoosh.Common.adjustHeights($(this));
 });
 
-$(document).bind('backbutton', function(e){
+$(document).bind('backbutton', function (e) {
     e.preventDefault();
 }, true);
 
-$(document).bind("mobileinit", function(){
-    $.mobile.defaultPageTransition="none";
+$(document).bind("mobileinit", function () {
+    $.mobile.defaultPageTransition = "none";
 });
 
-$(window).bind('orientationchange', function(){
+$(window).bind('orientationchange', function () {
     Swoosh.Navigation.showHideButtons($.mobile.activePage);
     Swoosh.Common.adjustHeights($.mobile.activePage);
 });

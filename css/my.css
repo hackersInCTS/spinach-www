@@ -15,6 +15,7 @@
 
 div[data-role="content"] {
     position: relative;
+    overflow: auto;
 }
 
 div[data-role="navigation"] {
@@ -22,6 +23,7 @@ div[data-role="navigation"] {
     bottom: 0;
     margin-bottom: 40px;
     width: 92%;
+    z-index: 100;
 }
 
 div[data-role="navigation"] > div {
