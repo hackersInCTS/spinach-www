@@ -163,6 +163,7 @@ Swoosh.Map = (function ($) {
             var onGetPositionSuccess = function (position) {
                 var mapViewModel = new MapViewModel();
                 var location = position.coords.latitude + ', ' + position.coords.longitude;
+				$('#CurrentLocation').val(location.latitude + ', ' + location.longitude);
                 mapViewModel.location = location;
                 mapViewModel.markers = [location];
                 Swoosh.GoogleMaps.reverseGeocode(position.coords.latitude,
@@ -671,6 +672,46 @@ Swoosh.Navigation = (function ($) {
     };
 }(jQuery));
 
+Swoosh.Submit = (function ($) {
+    return {
+        send:function () {
+		debugger;
+		Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
+           var LossDetails = Parse.Object.extend("LossDetails");
+                var lossDetails = new LossDetails();
+                lossDetails.save(
+                    {
+                        PolicyKey: $('#PolicyKey').val(),
+                        VehicleMake:$('#VehicleMake').text(),
+                        VehicleModel:$('#VehicleModel').text(),
+                        VehicleVIN:$('#VehicleVIN').text(),
+                        VehicleColor:$('#VehicleColor').text(),
+                        Driver : $('#select-choice-driver').val(),
+                        PrimaryInsured:$('#select-choice-driver').val(),
+                        LossDetailsText:"",
+                        LossLocation:$('#CurrentLocation').val(),
+                        LossDate: $('#select-choice-month').val() + "/" + $('#select-choice-day').val() + "/" + $('#select-choice-year').val() ,
+                        LossTime:$('#select-choice-hour').val() + ":" + $('#select-choice-minute').val(),
+                        LossImages: [""],
+                        LossAudio:""
+						
+                    },
+                    {
+                        success: function (lossDetailsInstance) {
+                            alert("Thank you! Your claim information has been updated!");
+							$.mobile.changePage($('#index'));
+                        },
+                        error: function (error) {
+							alert("Oops! Sorry there was an error updating your claim information.");
+							$.mobile.changePage($('#index'));
+                        }
+                    });
+        },
+		
+    };
+}(jQuery));
+
+
 //Page specific initialize events
 $(document).on("pageshow", "#map", function () {
     Swoosh.Map.initialize();
@@ -717,6 +758,8 @@ $(document).ready(function () {
     $(document).on('click', '#addAudioForward', Swoosh.Navigation.addAudioForward);
     $(document).on('click', '#summaryPageBack', Swoosh.Navigation.summaryPageBack);
 	$(document).on('click', '#PlotMapAnchor', Swoosh.LocationDialog.plotSpecificLocationClick);
+	$(document).on('click', '#SubmitButton', Swoosh.Submit.send);
+	Swoosh.Map.getCurrentPositionAndGeocode();
 
 });
 
