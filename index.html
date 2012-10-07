@@ -128,13 +128,25 @@
     <div data-role="content">
         <div class="ui-grid-a" id="thumbnailContainer">
         </div>
-        <a data-role="button" data-inline="true" id="addImageButton"
-           style="position: absolute; bottom: 1px;">Add Image
+        <a data-role="button" data-inline="true" id="addImageButton">
+            Add Image
         </a>
-    </div>
 
+        <div data-role="navigation">
+            <div class="backButton">
+                <a id="thumbnailImageBack">
+                    <img src="css/images/back.png"/>
+                </a>
+            </div>
+            <div class="forwardButton">
+                <a id="thumbnailImageForward">
+                    <img src="css/images/forward.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
     <!-- Image preview -->
-    <div data-role="popup" id="imagePreview" data-overlay-theme="a" data-theme="d" data-corners="false">
+    <div data-role="popup" id="imagePreview" data-overlay-theme="a" data-theme="a" data-corners="false">
         <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete"
            data-iconpos="notext"
            class="ui-btn-right">Close</a>
@@ -172,6 +184,38 @@
             <div class="forwardButton">
                 <a id="addAudioForward">
                     <img src="css/images/forward.png"/>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>© Hackers in CTS
+        </h5>
+    </div>
+</div>
+<!-- /page -->
+
+<!-- Start of summaryPage page -->
+<div data-role="page" id="summaryPage">
+    <div class="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            <img src="css/images/swoosh.png"/>
+            <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div class="bigButtonContainer">
+            <a data-role="button" data-inline="true" data-transition="none" id="SubmitButton">
+                <img src="css/images/send.png"/>
+
+                <div>Submit</div>
+            </a>
+        </div>
+        <div data-role="navigation">
+            <div class="backButton">
+                <a id="summaryPageBack">
+                    <img src="css/images/back.png"/>
                 </a>
             </div>
         </div>

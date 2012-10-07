@@ -579,10 +579,23 @@ Swoosh.Navigation = (function ($) {
         addPhotoBack:function () {
             $.mobile.changePage($('#lossDetail'));
         },
+        addPhotoForward:function () {
+            $.mobile.changePage($('#addAudio'));
+        },
         thumbnailImageBack:function () {
             $.mobile.changePage($('#lossDetail'));
         },
         thumbnailImageForward:function () {
+            $.mobile.changePage($('#addAudio'));
+        },
+        addAudioBack:function () {
+            if (Swoosh.Capture.Image.getImages().length) {
+                $.mobile.changePage($('#thumbnailImage'));
+            } else {
+                $.mobile.changePage($('#addPhoto'));
+            }
+        },
+        addAudioForward:function () {
             $.mobile.changePage($('#addAudio'));
         }
     };
@@ -620,19 +633,22 @@ $(document).ready(function () {
     $(document).on('click', '#ScanButton', Swoosh.QRCodeScanner.scan);
     $(document).on('click', '#noBarCodeButton', Swoosh.Navigation.noBarCodeButton);
 
-    $(document).on('click', '#lossDetailForward', Swoosh.Navigation.lossDetailForward);
-    $(document).on('click', '#addPhotoBack', Swoosh.Navigation.addPhotoBack);
-
     $(document).on('click', '#MainAddPhotoButton', Swoosh.Capture.Image.capturePhotoMain);
     $(document).on('click', '#addImageButton', Swoosh.Capture.Image.capturePhoto);
 
     $(document).on('click', '#AddAudioButton', Swoosh.Capture.captureAudio);
 
+    $(document).on('click', '#lossDetailForward', Swoosh.Navigation.lossDetailForward);
+    $(document).on('click', '#addPhotoBack', Swoosh.Navigation.addPhotoBack);
+    $(document).on('click', '#addPhotoForward', Swoosh.Navigation.addPhotoForward);
     $(document).on('click', '#thumbnailImageBack', Swoosh.Navigation.thumbnailImageBack);
     $(document).on('click', '#thumbnailImageForward', Swoosh.Navigation.thumbnailImageForward);
+    $(document).on('click', '#addAudioBack', Swoosh.Navigation.addAudioBack);
+    $(document).on('click', '#addAudioForward', Swoosh.Navigation.addAudioForward);
+
 });
 
-$(document).delegate('#page_name', 'pageshow', function () {
+$(document).delegate('div[data-role="page"]', 'pageshow', function () {
     var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
     $(this).height($(window).height()).find('[data-role="content"]').height(the_height);
 });
