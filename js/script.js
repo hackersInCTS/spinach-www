@@ -323,7 +323,7 @@ Swoosh.Capture.Image = (function ($) {
         }
 
         var anchor = $('<a data-rel="popup" data-position-to="window" data-transition="fade" href="#imagePreview"></a>').appendTo(columnDiv).on({ click: showImagePreview });
-        $("<img></img>").appendTo(anchor).attr("src", imagePath).width(thumbnailSize());
+        $("<img>").appendTo(anchor).attr("src", imagePath).width(thumbnailSize());
     };
 
     var captureImageSuccess = function (imagePath) {
@@ -336,6 +336,10 @@ Swoosh.Capture.Image = (function ($) {
     };
 
     return {
+        capturePhotoMain:function(){
+            $.mobile.changePage($('#thumbnailImage'));
+            Swoosh.Capture.Image.capturePhoto();
+        },
         capturePhoto: function () {
             var imageOption = {
                 quality: 75,
@@ -608,8 +612,10 @@ $(document).ready(function () {
     $(document).on('click', '#lossDetailForward', Swoosh.Navigation.lossDetailForward);
     $(document).on('click', '#addPhotoBack', Swoosh.Navigation.addPhotoBack);
 
-    $(document).on('click', '#AddPhotoButton', Swoosh.Capture.Image.capturePhoto);
+    $(document).on('click', '#MainAddPhotoButton', Swoosh.Capture.Image.capturePhotoMain);
     $(document).on('click', '#addImageButton', Swoosh.Capture.Image.capturePhoto);
+
+    $(document).on('click', '#AddAudioButton', Swoosh.Capture.captureAudio);
 });
 
 $(document).delegate('#page_name', 'pageshow', function () {
