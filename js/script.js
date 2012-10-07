@@ -98,8 +98,8 @@ Swoosh.Home = (function ($) {
 Swoosh.LocationDialog = (function ($) {
     return {
         plotSpecificLocationClick:function (e) {
-            if ($('#address').val()) {
-                $('#CurrentLocationFlag').val(false);
+		debugger;
+            if ($('#currentAddress').val()) {
                 Swoosh.Home.goToMapPage();
             } else {
                 e.preventDefault();
@@ -111,19 +111,14 @@ Swoosh.LocationDialog = (function ($) {
 Swoosh.Map = (function ($) {
     return {
         initialize:function () {
-            if ($('#CurrentLocationFlag').val() === 'true') {
-                Swoosh.Map.getCurrentPositionAndGeocode();
-            } else {
-                Swoosh.Map.getSpecificLocation();
-            }
+            Swoosh.Map.getSpecificLocation();
         },
         resetMaps:function () {
             $('#mapPlotImg').attr('src', '');
             $('#LocationMarker').empty();
         },
         getSpecificLocation:function () {
-            var userInput = $('#address').val();
-            $('#address').val('');
+            var userInput = $('#currentAddress').val();
             var onGeocodeSuccess = function (location) {
                 var mapViewModel = new MapViewModel();
                 mapViewModel.location = location.latitude + ', ' + location.longitude;
@@ -154,13 +149,15 @@ Swoosh.Map = (function ($) {
             var onReverseGeocodeSuccess = function (mapViewModel) {
                 return function (resolvedCity) {
                     $('#LocationMarker').text(resolvedCity);
-                    Swoosh.Map.plotMap(mapViewModel);
+//                    Swoosh.Map.plotMap(mapViewModel);
+                    $('#currentAddress').val(resolvedCity);
+
                 };
             };
             var onReverseGeocodeError = function (mapViewModel) {
                 return function (errorReason) {
                     console.log(errorReason);
-                    Swoosh.Map.plotMap(mapViewModel);
+//                    Swoosh.Map.plotMap(mapViewModel);
                 };
             };
             var onGetPositionSuccess = function (position) {
@@ -719,6 +716,7 @@ $(document).ready(function () {
     $(document).on('click', '#addAudioBack', Swoosh.Navigation.addAudioBack);
     $(document).on('click', '#addAudioForward', Swoosh.Navigation.addAudioForward);
     $(document).on('click', '#summaryPageBack', Swoosh.Navigation.summaryPageBack);
+	$(document).on('click', '#PlotMapAnchor', Swoosh.LocationDialog.plotSpecificLocationClick);
 
 });
 

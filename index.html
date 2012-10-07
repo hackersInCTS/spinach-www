@@ -442,6 +442,34 @@
 </div>
 <!-- /page -->
 
+<!-- Start of map page -->
+<div data-role="page" id="map">
+    <div data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            Map
+        </h3>
+    </div>
+    <div data-role="content" style="padding: 15px">
+        <div>
+            <input id="CurrentLocationFlag" type="hidden">
+            <img id="mapPlotImg" src=""/>
+            <h4 id="LocationMarker"></h4>
+        </div>
+        <div>
+            <a data-role="button" data-rel="back" data-inline="true" data-transition="none" href="#"
+               data-icon="back" data-iconpos="left">
+                Back
+            </a>
+        </div>
+    </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>
+            © Hackers in CTS
+        </h5>
+    </div>
+</div>
+<!-- /page -->
+
 <script src="js/lib/jquery-1.8.2.min.js"></script>
 <script src="js/lib/jquery.mobile-1.2.0.min.js"></script>
 <script type="text/javascript" src="js/lib/parse-1.1.4.js"></script>
