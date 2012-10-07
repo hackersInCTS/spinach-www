@@ -501,7 +501,7 @@ Swoosh.Device = (function ($) {
                     success:function (spinachDevice) {
                         console.log("Added device...: " + JSON.stringify(spinachDevice));
                         Swoosh.Device.instance = spinachDevice;
-                        Swoosh.Common.alert('Added device to database...');
+                        //Swoosh.Common.alert('Added device to database...');
                         navigator.splashscreen.hide();
                     },
                     error:function (error) {
@@ -698,7 +698,7 @@ Swoosh.Submit = (function ($) {
                 },
                 {
                     success:function (lossDetailsInstance) {
-                        alert("Thank you! Your claim information has been updated!");
+                        Spinach.Common.alert("Thank you! Your claim information has been updated!");
                         $.mobile.changePage($('#index'));
                     },
                     error:function (error) {
