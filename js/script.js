@@ -679,6 +679,7 @@ Swoosh.Submit = (function ($) {
             var lossDetails = new LossDetails();
             lossDetails.save(
                 {
+                    DeviceId:Swoosh.Device.getDeviceId(),
                     PolicyKey:$('#PolicyKey').val(),
                     VehicleMake:$('#VehicleMake').text(),
                     VehicleModel:$('#VehicleModel').text(),

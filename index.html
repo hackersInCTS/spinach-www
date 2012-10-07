@@ -109,7 +109,7 @@
         <fieldset data-role="controlgroup" data-type="horizontal">
             <legend class="headerLabel">Date:</legend>
             <label for="select-choice-month">Month</label>
-            <select name="select-choice-month" id="select-choice-month">
+            <select name="select-choice-month" id="select-choice-month" data-mini="true" data-inline="true" >
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -125,7 +125,7 @@
             </select>
 
             <label for="select-choice-day" class="headerLabel">Day</label>
-            <select name="select-choice-day" id="select-choice-day">
+            <select name="select-choice-day" id="select-choice-day" data-mini="true" data-inline="true" >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -161,7 +161,7 @@
             </select>
 
             <label for="select-choice-year" class="headerLabel">Year</label>
-            <select name="select-choice-year" id="select-choice-year">
+            <select name="select-choice-year" id="select-choice-year" data-mini="true" data-inline="true" >
                 <option value="2012">2012</option>
                 <option value="2011">2011</option>
                 <!-- etc. -->
@@ -170,11 +170,11 @@
         </fieldset>
     </div>
     <div data-role="fieldcontain" data-theme="b">
-        <fieldset data-role="controlgroup" data-type="horizontal">
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
             <legend>Time:</legend>
 
             <label for="select-choice-hour" class="headerLabel">Hour</label>
-            <select name="select-choice-hour" id="select-choice-hour">
+            <select name="select-choice-hour" id="select-choice-hour" data-mini="true" data-inline="true">
                 <option value="0">0</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -203,7 +203,7 @@
             </select>
 
             <label for="select-choice-minute" class="headerLabel">Minute</label>
-            <select name="select-choice-minute" id="select-choice-minute">
+            <select name="select-choice-minute" id="select-choice-minute" data-inline="true" data-mini="true">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -265,8 +265,6 @@
                 <option value="59">59</option>
                 <!-- etc. -->
             </select>
-
-
         </fieldset>
     </div>
 
@@ -277,12 +275,12 @@
 
     <p>
 
-    <div data-role="fieldcontain" data-theme="b">
-
-        <input type="text" name="search" id="currentAddress" value=""/>
-        <a id="PlotMapAnchor" data-role="button" data-icon="arrow-r" data-iconpos="notext" data-mini="true"
-           data-inline="true">Plot</a>
-
+    <div data-role="fieldcontain" data-theme="b" data-mini="true">
+        <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" data-inline="true" >
+            <input type="text" name="search" id="currentAddress" value="" data-mini="true" data-inline="true"/>
+            <a id="PlotMapAnchor" data-role="button" data-icon="arrow-r" data-iconpos="notext" data-mini="true"
+               data-inline="true">Plot</a>
+        </fieldset>
     </div>
     </p>
 </div>

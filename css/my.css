@@ -22,6 +22,7 @@ div[data-role="navigation"] {
     position: fixed;
     width: 99%;
     z-index: 100;
+    text-align: center;
 }
 
 div[data-role="navigation"] > div {
@@ -31,6 +32,10 @@ div[data-role="navigation"] > div {
 div[data-role="navigation"] > a {
     background-color: transparent;
     box-shadow: none;
+}
+
+.backButton {
+    float: left;
 }
 
 .forwardButton {
