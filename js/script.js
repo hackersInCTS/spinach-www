@@ -97,7 +97,7 @@ Swoosh.Home = (function ($) {
 Swoosh.LocationDialog = (function ($) {
     return {
         plotSpecificLocationClick:function (e) {
-		debugger;
+            debugger;
             if ($('#currentAddress').val()) {
                 Swoosh.Home.goToMapPage();
             } else {
@@ -162,7 +162,7 @@ Swoosh.Map = (function ($) {
             var onGetPositionSuccess = function (position) {
                 var mapViewModel = new MapViewModel();
                 var location = position.coords.latitude + ', ' + position.coords.longitude;
-				$('#CurrentLocation').val(location.latitude + ', ' + location.longitude);
+                $('#CurrentLocation').val(location.latitude + ', ' + location.longitude);
                 mapViewModel.location = location;
                 mapViewModel.markers = [location];
                 Swoosh.GoogleMaps.reverseGeocode(position.coords.latitude,
@@ -629,9 +629,8 @@ Swoosh.Navigation = (function ($) {
                 $(this).hide();
             });
             window.setTimeout(function () {
-                page.find('div[data-role="navigation"]').show('slow');
+                page.find('div[data-role="navigation"]').css('top', ($(window).height() / 2)).show('slow');
             }, 500);
-
         },
         noBarCodeButton:function () {
             $.mobile.changePage($('#lossDetail'));
@@ -674,39 +673,39 @@ Swoosh.Navigation = (function ($) {
 Swoosh.Submit = (function ($) {
     return {
         send:function () {
-		debugger;
-		Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
-           var LossDetails = Parse.Object.extend("LossDetails");
-                var lossDetails = new LossDetails();
-                lossDetails.save(
-                    {
-                        PolicyKey: $('#PolicyKey').val(),
-                        VehicleMake:$('#VehicleMake').text(),
-                        VehicleModel:$('#VehicleModel').text(),
-                        VehicleVIN:$('#VehicleVIN').text(),
-                        VehicleColor:$('#VehicleColor').text(),
-                        Driver : $('#select-choice-driver').val(),
-                        PrimaryInsured:$('#select-choice-driver').val(),
-                        LossDetailsText:"",
-                        LossLocation:$('#CurrentLocation').val(),
-                        LossDate: $('#select-choice-month').val() + "/" + $('#select-choice-day').val() + "/" + $('#select-choice-year').val() ,
-                        LossTime:$('#select-choice-hour').val() + ":" + $('#select-choice-minute').val(),
-                        LossImages: [""],
-                        LossAudio:""
-						
+            debugger;
+            Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
+            var LossDetails = Parse.Object.extend("LossDetails");
+            var lossDetails = new LossDetails();
+            lossDetails.save(
+                {
+                    PolicyKey:$('#PolicyKey').val(),
+                    VehicleMake:$('#VehicleMake').text(),
+                    VehicleModel:$('#VehicleModel').text(),
+                    VehicleVIN:$('#VehicleVIN').text(),
+                    VehicleColor:$('#VehicleColor').text(),
+                    Driver:$('#select-choice-driver').val(),
+                    PrimaryInsured:$('#select-choice-driver').val(),
+                    LossDetailsText:"",
+                    LossLocation:$('#CurrentLocation').val(),
+                    LossDate:$('#select-choice-month').val() + "/" + $('#select-choice-day').val() + "/" + $('#select-choice-year').val(),
+                    LossTime:$('#select-choice-hour').val() + ":" + $('#select-choice-minute').val(),
+                    LossImages:[""],
+                    LossAudio:""
+
+                },
+                {
+                    success:function (lossDetailsInstance) {
+                        alert("Thank you! Your claim information has been updated!");
+                        $.mobile.changePage($('#index'));
                     },
-                    {
-                        success: function (lossDetailsInstance) {
-                            alert("Thank you! Your claim information has been updated!");
-							$.mobile.changePage($('#index'));
-                        },
-                        error: function (error) {
-							alert("Oops! Sorry there was an error updating your claim information.");
-							$.mobile.changePage($('#index'));
-                        }
-                    });
+                    error:function (error) {
+                        alert("Oops! Sorry there was an error updating your claim information.");
+                        $.mobile.changePage($('#index'));
+                    }
+                });
         },
-		
+
     };
 }(jQuery));
 
@@ -756,15 +755,15 @@ $(document).ready(function () {
     $(document).on('click', '#addAudioBack', Swoosh.Navigation.addAudioBack);
     $(document).on('click', '#addAudioForward', Swoosh.Navigation.addAudioForward);
     $(document).on('click', '#summaryPageBack', Swoosh.Navigation.summaryPageBack);
-	$(document).on('click', '#PlotMapAnchor', Swoosh.LocationDialog.plotSpecificLocationClick);
-	$(document).on('click', '#SubmitButton', Swoosh.Submit.send);
-	Swoosh.Map.getCurrentPositionAndGeocode();
+    $(document).on('click', '#PlotMapAnchor', Swoosh.LocationDialog.plotSpecificLocationClick);
+    $(document).on('click', '#SubmitButton', Swoosh.Submit.send);
+    Swoosh.Map.getCurrentPositionAndGeocode();
 
 });
 
 $(document).delegate('div[data-role="page"]', 'pageshow', function () {
     Swoosh.Navigation.showHideButtons($(this));
-    Swoosh.Common.adjustHeights($(this));
+    //Swoosh.Common.adjustHeights($(this));
 });
 
 $(document).bind('backbutton', function (e) {
@@ -777,5 +776,5 @@ $(document).bind("mobileinit", function () {
 
 $(window).bind('orientationchange', function () {
     Swoosh.Navigation.showHideButtons($.mobile.activePage);
-    Swoosh.Common.adjustHeights($.mobile.activePage);
+    //Swoosh.Common.adjustHeights($.mobile.activePage);
 });

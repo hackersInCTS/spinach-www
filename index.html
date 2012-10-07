@@ -43,14 +43,21 @@
 
 <!-- Start of index page -->
 <div data-role="page" id="lossDetail">
-    <div class="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
-        <h3>
-            <img src="css/images/swoosh.png"/>
-            <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
-        </h3>
+<div class="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
+    <h3>
+        <img src="css/images/swoosh.png"/>
+        <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
+    </h3>
+</div>
+<div data-role="content" style="padding: 15px">
+<div data-role="navigation">
+    <div class="forwardButton">
+        <a id="lossDetailForward">
+            <img src="css/images/forward.png"/>
+        </a>
     </div>
-    <div data-role="content" style="padding: 15px">
-       <div id="scannedData">
+</div>
+<div id="scannedData">
 <div data-role="collapsible" data-collapsed="true" data-theme="b">
     <h3>Policy Information</h3>
 
@@ -273,25 +280,19 @@
     <div data-role="fieldcontain" data-theme="b">
 
         <input type="text" name="search" id="currentAddress" value=""/>
-        <a id="PlotMapAnchor" data-role="button" data-icon="arrow-r" data-iconpos="notext" data-mini="true" data-inline="true">Plot</a>
+        <a id="PlotMapAnchor" data-role="button" data-icon="arrow-r" data-iconpos="notext" data-mini="true"
+           data-inline="true">Plot</a>
 
     </div>
     </p>
 </div>
 </div>
 
-        <div data-role="navigation">
-            <div class="forwardButton">
-                <a id="lossDetailForward">
-                    <img src="css/images/forward.png"/>
-                </a>
-            </div>
-        </div>
-    </div>
-    <div data-theme="a" data-role="footer" data-position="fixed">
-        <h5>© Hackers in CTS
-        </h5>
-    </div>
+</div>
+<div data-theme="a" data-role="footer" data-position="fixed">
+    <h5>© Hackers in CTS
+    </h5>
+</div>
 </div>
 <!-- /page -->
 
@@ -304,13 +305,6 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-        <div class="bigButtonContainer">
-            <a data-role="button" data-inline="true" data-transition="none" id="MainAddPhotoButton">
-                <img src="css/images/snap.png"/>
-
-                <div>Add Photographs</div>
-            </a>
-        </div>
         <div data-role="navigation">
             <div class="backButton">
                 <a id="addPhotoBack">
@@ -322,6 +316,13 @@
                     <img src="css/images/forward.png"/>
                 </a>
             </div>
+        </div>
+        <div class="bigButtonContainer">
+            <a data-role="button" data-inline="true" data-transition="none" id="MainAddPhotoButton">
+                <img src="css/images/snap.png"/>
+
+                <div>Add Photographs</div>
+            </a>
         </div>
     </div>
     <div data-theme="a" data-role="footer" data-position="fixed">
@@ -340,12 +341,6 @@
         </h3>
     </div>
     <div data-role="content">
-        <div class="ui-grid-a" id="thumbnailContainer">
-        </div>
-        <a data-role="button" data-inline="true" id="addImageButton">
-            Add Image
-        </a>
-
         <div data-role="navigation">
             <div class="backButton">
                 <a id="thumbnailImageBack">
@@ -358,6 +353,12 @@
                 </a>
             </div>
         </div>
+        <div class="ui-grid-a" id="thumbnailContainer">
+        </div>
+        <a data-role="button" data-inline="true" id="addImageButton">
+            Add Image
+        </a>
+
     </div>
     <!-- Image preview -->
     <div data-role="popup" id="imagePreview" data-overlay-theme="a" data-theme="a" data-corners="false">
@@ -382,13 +383,6 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-        <div class="bigButtonContainer">
-            <a data-role="button" data-inline="true" data-transition="none" id="AddAudioButton">
-                <img src="css/images/speak.png"/>
-
-                <div>Add Voice Notes</div>
-            </a>
-        </div>
         <div data-role="navigation">
             <div class="backButton">
                 <a id="addAudioBack">
@@ -400,6 +394,13 @@
                     <img src="css/images/forward.png"/>
                 </a>
             </div>
+        </div>
+        <div class="bigButtonContainer">
+            <a data-role="button" data-inline="true" data-transition="none" id="AddAudioButton">
+                <img src="css/images/speak.png"/>
+
+                <div>Add Voice Notes</div>
+            </a>
         </div>
     </div>
 
@@ -419,19 +420,19 @@
         </h3>
     </div>
     <div data-role="content" style="padding: 15px">
-        <div class="bigButtonContainer">
-            <a data-role="button" data-inline="true" data-transition="none" id="SubmitButton">
-                <img src="css/images/send.png"/>
-
-                <div>Submit</div>
-            </a>
-        </div>
         <div data-role="navigation">
             <div class="backButton">
                 <a id="summaryPageBack">
                     <img src="css/images/back.png"/>
                 </a>
             </div>
+        </div>
+        <div class="bigButtonContainer">
+            <a data-role="button" data-inline="true" data-transition="none" id="SubmitButton">
+                <img src="css/images/send.png"/>
+
+                <div>Submit</div>
+            </a>
         </div>
     </div>
 
