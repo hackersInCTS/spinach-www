@@ -13,9 +13,15 @@
     text-align: center;
 }
 
-div[data-role="navigation"] {
+div[data-role="content"] {
     position: relative;
+}
+
+div[data-role="navigation"] {
+    position: absolute;
     bottom: 0;
+    margin-bottom: 40px;
+    width: 92%;
 }
 
 div[data-role="navigation"] > div {

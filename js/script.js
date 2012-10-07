@@ -35,6 +35,11 @@ Swoosh.Common = (function ($) {
                 return "";
             else
                 return decodeURIComponent(results[1].replace(/\+/g, " "));
+        },
+        adjustHeights:function(me){
+            var the_height = ($(window).height() - me.find('[data-role="header"]').height() - me.find('[data-role="footer"]').height());
+            me.height($(window).height());
+            me.find('[data-role="content"]').height(the_height);
         }
     };
 }(jQuery));
@@ -566,6 +571,15 @@ Swoosh.GCM = (function ($) {
 
 Swoosh.Navigation = (function ($) {
     return {
+        showHideButtons:function(page){
+            $('div[data-role="navigation"]').each(function(){
+                $(this).hide();
+            });
+            window.setTimeout(function(){
+                page.find('div[data-role="navigation"]').show('slow');
+            }, 500);
+
+        },
         noBarCodeButton:function () {
             $.mobile.changePage($('#lossDetail'));
         },
@@ -596,6 +610,9 @@ Swoosh.Navigation = (function ($) {
             }
         },
         addAudioForward:function () {
+            $.mobile.changePage($('#summaryPage'));
+        },
+        summaryPageBack:function(){
             $.mobile.changePage($('#addAudio'));
         }
     };
@@ -645,10 +662,24 @@ $(document).ready(function () {
     $(document).on('click', '#thumbnailImageForward', Swoosh.Navigation.thumbnailImageForward);
     $(document).on('click', '#addAudioBack', Swoosh.Navigation.addAudioBack);
     $(document).on('click', '#addAudioForward', Swoosh.Navigation.addAudioForward);
+    $(document).on('click', '#summaryPageBack', Swoosh.Navigation.summaryPageBack);
 
 });
 
 $(document).delegate('div[data-role="page"]', 'pageshow', function () {
-    var the_height = ($(window).height() - $(this).find('[data-role="header"]').height() - $(this).find('[data-role="footer"]').height());
-    $(this).height($(window).height()).find('[data-role="content"]').height(the_height);
+    Swoosh.Navigation.showHideButtons($(this));
+    Swoosh.Common.adjustHeights($(this));
+});
+
+$(document).bind('backbutton', function(e){
+    e.preventDefault();
+}, true);
+
+$(document).bind("mobileinit", function(){
+    $.mobile.defaultPageTransition="none";
+});
+
+$(window).bind('orientationchange', function(){
+    Swoosh.Navigation.showHideButtons($.mobile.activePage);
+    Swoosh.Common.adjustHeights($.mobile.activePage);
 });
