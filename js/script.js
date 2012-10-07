@@ -18,7 +18,7 @@ var Swoosh = Swoosh || {};
 
 Swoosh.Common = (function ($) {
     return {
-        alert: function (message) {
+        alert:function (message) {
             try {
                 navigator.notification.alert(message, $.noop, "Swoosh");
             }
@@ -26,7 +26,7 @@ Swoosh.Common = (function ($) {
                 alert(message);
             }
         },
-        getQueryStringValue: function (name) {
+        getQueryStringValue:function (name) {
             name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
             var regexS = "[\\?&]" + name + "=([^&#]*)";
             var regex = new RegExp(regexS);
@@ -41,7 +41,7 @@ Swoosh.Common = (function ($) {
 
 Swoosh.Home = (function ($) {
     return {
-        deviceReady: function () {
+        deviceReady:function () {
             Parse.initialize("yMQl1IsnmiQZGS8TC1Y3mt4OQ05KwVxAZUvCvlD7", "qTKk5cT5J0xRifoYGm1BPyY9nE7jPWEkDSRA31aN");
             Swoosh.Device.register();
             var pushedMessage = Swoosh.Common.getQueryStringValue("jsonData");
@@ -50,15 +50,15 @@ Swoosh.Home = (function ($) {
                 Swoosh.PushNotification.show(JSON.parse(pushedMessage).message);
             }
         },
-        currentLocationClick: function () {
+        currentLocationClick:function () {
             $('#CurrentLocationFlag').val(true);
             Swoosh.Home.goToMapPage();
         },
-        goToMapPage: function () {
+        goToMapPage:function () {
             Swoosh.Map.resetMaps();
             $.mobile.changePage($('#map'));
         },
-        getCurrentAcceleration: function () {
+        getCurrentAcceleration:function () {
             var alertAcceleration = function (acceleration) {
                 Swoosh.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
                     'Acceleration Y: ' + acceleration.y + '\n' +
@@ -70,7 +70,7 @@ Swoosh.Home = (function ($) {
             };
             Swoosh.Accelerometer.getAcceleration(alertAcceleration, alertAccelerationError);
         },
-        getSpeedAndLocation: function () {
+        getSpeedAndLocation:function () {
             Swoosh.Map.getSpeedAndLocation();
         }
     };
@@ -78,7 +78,7 @@ Swoosh.Home = (function ($) {
 
 Swoosh.LocationDialog = (function ($) {
     return {
-        plotSpecificLocationClick: function (e) {
+        plotSpecificLocationClick:function (e) {
             if ($('#address').val()) {
                 $('#CurrentLocationFlag').val(false);
                 Swoosh.Home.goToMapPage();
@@ -91,18 +91,18 @@ Swoosh.LocationDialog = (function ($) {
 
 Swoosh.Map = (function ($) {
     return {
-        initialize: function () {
+        initialize:function () {
             if ($('#CurrentLocationFlag').val() === 'true') {
                 Swoosh.Map.getCurrentPositionAndGeocode();
             } else {
                 Swoosh.Map.getSpecificLocation();
             }
         },
-        resetMaps: function () {
+        resetMaps:function () {
             $('#mapPlotImg').attr('src', '');
             $('#LocationMarker').empty();
         },
-        getSpecificLocation: function () {
+        getSpecificLocation:function () {
             var userInput = $('#address').val();
             $('#address').val('');
             var onGeocodeSuccess = function (location) {
@@ -119,19 +119,19 @@ Swoosh.Map = (function ($) {
             };
             Swoosh.GoogleMaps.geocode(userInput, onGeocodeSuccess, onGeocodeError);
         },
-        getCurrentPosition: function (onSuccess) {
+        getCurrentPosition:function (onSuccess) {
             var onGetPositionError = function (error) {
                 Swoosh.Common.alert('Code   : ' + error.code + '\n' +
                     'Message: ' + error.message + '\n');
             };
             var geoLocationOptions = {
-                maximumAge: 1000,
-                timeout: 3000,
-                enableHighAccuracy: true
+                maximumAge:1000,
+                timeout:3000,
+                enableHighAccuracy:true
             };
             navigator.geolocation.getCurrentPosition(onSuccess, onGetPositionError, geoLocationOptions);
         },
-        getCurrentPositionAndGeocode: function () {
+        getCurrentPositionAndGeocode:function () {
             var onReverseGeocodeSuccess = function (mapViewModel) {
                 return function (resolvedCity) {
                     $('#LocationMarker').text(resolvedCity);
@@ -156,7 +156,7 @@ Swoosh.Map = (function ($) {
             };
             Swoosh.Map.getCurrentPosition(onGetPositionSuccess);
         },
-        getSpeedAndLocation: function () {
+        getSpeedAndLocation:function () {
             var onGetSpeedAndLocationSuccess = function (position) {
                 Swoosh.Common.alert('Latitude : ' + position.coords.latitude + '\n' +
                     'Longitude: ' + position.coords.longitude + '\n' +
@@ -164,7 +164,7 @@ Swoosh.Map = (function ($) {
             };
             Swoosh.Map.getCurrentPosition(onGetSpeedAndLocationSuccess);
         },
-        plotMap: function (mapViewModel) {
+        plotMap:function (mapViewModel) {
             $('#mapPlotImg').attr('src', mapViewModel.getMapUrl());
         }
     };
@@ -172,9 +172,9 @@ Swoosh.Map = (function ($) {
 
 Swoosh.AccelerationDialog = (function ($) {
     return {
-        watchAcceleration: function () {
+        watchAcceleration:function () {
             var interval = parseInt($('#interval :radio:checked').val(), 10);
-            var options = { frequency: interval };
+            var options = { frequency:interval };
             var onSuccess = function (acceleration) {
                 Swoosh.Common.alert('Acceleration X: ' + acceleration.x + '\n' +
                     'Acceleration Y: ' + acceleration.y + '\n' +
@@ -195,13 +195,13 @@ Swoosh.AccelerationDialog = (function ($) {
 
 Swoosh.GetPhotoDialog = (function ($) {
     return {
-        fromLibrary: function () {
+        fromLibrary:function () {
             Swoosh.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.PHOTOLIBRARY);
         },
-        fromCamera: function () {
+        fromCamera:function () {
             Swoosh.GetPhotoDialog.getPhoto(navigator.camera.PictureSourceType.CAMERA);
         },
-        getPhoto: function (sourceType) {
+        getPhoto:function (sourceType) {
             var destinationType,
                 selectedDestinationType = $('#destinationType :radio:checked').val();
             if (selectedDestinationType === "0") {
@@ -213,24 +213,24 @@ Swoosh.GetPhotoDialog = (function ($) {
                 return;
             }
             var cameraOptions = {
-                quality: 75,
-                destinationType: destinationType,
-                sourceType: sourceType,
-                allowEdit: true,
-                encodingType: navigator.camera.EncodingType.JPEG,
-                mediaType: navigator.camera.MediaType.PICTURE,
-                correctOrientation: true,
-                popoverOptions: {
+                quality:75,
+                destinationType:destinationType,
+                sourceType:sourceType,
+                allowEdit:true,
+                encodingType:navigator.camera.EncodingType.JPEG,
+                mediaType:navigator.camera.MediaType.PICTURE,
+                correctOrientation:true,
+                popoverOptions:{
                     //only relevant for iOS
                 },
-                saveToPhotoAlbum: false
+                saveToPhotoAlbum:false
             };
             var onGetPhotoSuccess = function (imageData) {
                 var formattedImageData = (destinationType === navigator.camera.DestinationType.DATA_URL) ?
                     'data:image/jpeg;base64,' + imageData : imageData;
                 $('#photoDisplay').attr('src', formattedImageData)
                     .css({
-                        width: $(window).width() - 50
+                        width:$(window).width() - 50
                     })
                     .show();
                 $.mobile.changePage($('#showPhotoDialog'));
@@ -245,7 +245,7 @@ Swoosh.GetPhotoDialog = (function ($) {
 
 Swoosh.ShowPhotoDialog = (function ($) {
     return {
-        close: function () {
+        close:function () {
             $('#photoDisplay').attr('src', '').hide();
         }
     };
@@ -253,24 +253,25 @@ Swoosh.ShowPhotoDialog = (function ($) {
 
 Swoosh.QRCodeScanner = (function ($) {
     return {
-        onScanSuccess: function (results) {
+        onScanSuccess:function (results) {
+            console.log(results[0]);
             $('#scannedData').text(results[0]);
             $.mobile.changePage($('#lossDetail'));
         },
-        onScanCancel: function () {
+        onScanCancel:function () {
             console.log('QR Code Scan canceled.');
         },
-        scan: function () {
+        scan:function () {
             scanditSDK.scan(Swoosh.QRCodeScanner.onScanSuccess,
                 Swoosh.QRCodeScanner.onScanCancel,
                 "4ABoYAsrEeKA+T2bxul+mhOXR7pIOLby9vVmgFSTTOw",
                 {
-                    'beep': true,
-                    'qr': true,
-                    'scanningHotspot': '0.5/0.5',
-                    'vibrate': true,
-                    'torch': true,
-                    'titleMessage': 'Scan the QR Code'
+                    'beep':true,
+                    'qr':true,
+                    'scanningHotspot':'0.5/0.5',
+                    'vibrate':true,
+                    'torch':true,
+                    'titleMessage':'Scan the QR Code'
                 }
             );
         }
@@ -279,25 +280,25 @@ Swoosh.QRCodeScanner = (function ($) {
 
 Swoosh.Capture = (function ($) {
     return {
-        getFormatDataSuccess: function (mediaFileData) {
+        getFormatDataSuccess:function (mediaFileData) {
             console.log('Media File Data: ' + JSON.stringify(mediaFileData));
         },
-        getFormatDataError: function (error) {
+        getFormatDataError:function (error) {
             console.log('Error in getFormatData function: ' + JSON.stringify(error));
         },
-        captureAudioSuccess: function (mediaFile) {
+        captureAudioSuccess:function (mediaFile) {
             console.log('Media File: ' + JSON.stringify(mediaFile));
             mediaFile.getFormatData(Swoosh.Capture.getFormatDataSuccess, Swoosh.Capture.getFormatDataError);
         },
-        captureAudioError: function (error) {
+        captureAudioError:function (error) {
             console.log('Error in CaptureAudio function: ' + JSON.stringify(error));
         },
-        captureAudio: function () {
+        captureAudio:function () {
             navigator.device.capture.captureAudio(
                 Swoosh.Capture.captureAudioSuccess,
                 Swoosh.Capture.captureAudioError,
                 {
-                    limit: 1
+                    limit:1
                 });
         }
     };
@@ -336,32 +337,32 @@ Swoosh.Capture.Image = (function ($) {
     };
 
     return {
-        capturePhotoMain:function(){
+        capturePhotoMain:function () {
             $.mobile.changePage($('#thumbnailImage'));
             Swoosh.Capture.Image.capturePhoto();
         },
-        capturePhoto: function () {
+        capturePhoto:function () {
             var imageOption = {
-                quality: 75,
-                destinationType: navigator.camera.DestinationType.FILE_URI,
-                sourceType: navigator.camera.PictureSourceType.CAMERA,
-                allowEdit: true,
-                encodingType: navigator.camera.EncodingType.JPEG,
-                mediaType: navigator.camera.MediaType.PICTURE,
-                correctOrientation: true,
-                popoverOptions: {
+                quality:75,
+                destinationType:navigator.camera.DestinationType.FILE_URI,
+                sourceType:navigator.camera.PictureSourceType.CAMERA,
+                allowEdit:true,
+                encodingType:navigator.camera.EncodingType.JPEG,
+                mediaType:navigator.camera.MediaType.PICTURE,
+                correctOrientation:true,
+                popoverOptions:{
                     //only relevant for iOS
                 },
-                saveToPhotoAlbum: false
+                saveToPhotoAlbum:false
             };
 
             navigator.camera.getPicture(captureImageSuccess,
                 captureImageError, imageOption);
         },
-        clearImages: function () {
+        clearImages:function () {
             images = [];
         },
-        getImages: function () {
+        getImages:function () {
             return images;
         }
     };
@@ -370,13 +371,13 @@ Swoosh.Capture.Image = (function ($) {
 Swoosh.Accelerometer = (function ($) {
     var watchID;
     return {
-        getAcceleration: function (onSuccess, onError) {
+        getAcceleration:function (onSuccess, onError) {
             navigator.accelerometer.getCurrentAcceleration(onSuccess, onError);
         },
-        watchAcceleration: function (onSuccess, onError, options) {
+        watchAcceleration:function (onSuccess, onError, options) {
             watchID = navigator.accelerometer.watchAcceleration(onSuccess, onError, options);
         },
-        clearWatch: function () {
+        clearWatch:function () {
             $('#startWatchButton').show();
             $('#clearWatchButton').hide();
             if (watchID) {
@@ -389,21 +390,21 @@ Swoosh.Accelerometer = (function ($) {
 
 Swoosh.Device = (function ($) {
     return {
-        Class: Parse.Object.extend("SwooshDevice"),
-        instance: null,
-        getDeviceId: function () {
+        Class:Parse.Object.extend("SwooshDevice"),
+        instance:null,
+        getDeviceId:function () {
             return device.platform + "_" + device.name + "_" + device.uuid;
         },
-        registerQuerySuccess: function (spinachDevice) {
+        registerQuerySuccess:function (spinachDevice) {
             if (spinachDevice) {
                 console.log('Successfully retrieved device... Dummy save' + JSON.stringify(spinachDevice));
                 spinachDevice.save({
-                    success: function (spinachDevice) {
+                    success:function (spinachDevice) {
                         console.log('Successfully updated device...' + JSON.stringify(spinachDevice));
                         Swoosh.Device.instance = spinachDevice;
                         navigator.splashscreen.hide();
                     },
-                    error: function (error) {
+                    error:function (error) {
                         console.log('Error in update-date: ' + JSON.stringify(error));
                         navigator.splashscreen.hide();
                     }
@@ -413,49 +414,49 @@ Swoosh.Device = (function ($) {
                 Swoosh.GCM.register();
             }
         },
-        register: function () {
+        register:function () {
             var query = new Parse.Query(Swoosh.Device.Class);
             query.equalTo('deviceId', Swoosh.Device.getDeviceId());
             query.first({
-                success: Swoosh.Device.registerQuerySuccess,
-                error: function (error) {
+                success:Swoosh.Device.registerQuerySuccess,
+                error:function (error) {
                     console.log('Error in find: ' + JSON.stringify(error));
                     navigator.splashscreen.hide();
                 }
             });
         },
-        add: function (apnsDeviceId, gcmDeviceId) {
+        add:function (apnsDeviceId, gcmDeviceId) {
             var spinachDevice = new Swoosh.Device.Class();
             spinachDevice.save(
                 {
-                    deviceId: Swoosh.Device.getDeviceId(),
-                    name: device.name,
-                    cordova: device.cordova,
-                    platform: device.platform,
-                    uuid: device.uuid,
-                    version: device.version,
-                    apnsDeviceId: apnsDeviceId,
-                    gcmDeviceId: gcmDeviceId
+                    deviceId:Swoosh.Device.getDeviceId(),
+                    name:device.name,
+                    cordova:device.cordova,
+                    platform:device.platform,
+                    uuid:device.uuid,
+                    version:device.version,
+                    apnsDeviceId:apnsDeviceId,
+                    gcmDeviceId:gcmDeviceId
                 },
                 {
-                    success: function (spinachDevice) {
+                    success:function (spinachDevice) {
                         console.log("Added device...: " + JSON.stringify(spinachDevice));
                         Swoosh.Device.instance = spinachDevice;
                         Swoosh.Common.alert('Added device to database...');
                         navigator.splashscreen.hide();
                     },
-                    error: function (error) {
+                    error:function (error) {
                         console.log('Error adding device: ' + JSON.stringify(error));
                         navigator.splashscreen.hide();
                     }
                 });
         },
-        remove: function () {
+        remove:function () {
             Swoosh.Device.instance.destroy({
-                success: function (spinachDevice) {
+                success:function (spinachDevice) {
                     console.log('Device deleted successfully: ' + JSON.stringify(spinachDevice));
                 },
-                error: function (spinachDevice, error) {
+                error:function (spinachDevice, error) {
                     console.log('Error deleting device: ' + JSON.stringify(error));
                 }
             });
@@ -465,14 +466,14 @@ Swoosh.Device = (function ($) {
 
 Swoosh.GoogleMaps = (function ($) {
     return {
-        geocode: function (address, onSuccess, onError) {
+        geocode:function (address, onSuccess, onError) {
             var geoCoder = new google.maps.Geocoder();
-            geoCoder.geocode({ 'address': address }, function (results, status) {
+            geoCoder.geocode({ 'address':address }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     var location = {
-                        longitude: results[0].geometry.location.lng,
-                        latitude: results[0].geometry.location.lat,
-                        address: results[0].formatted_address
+                        longitude:results[0].geometry.location.lng,
+                        latitude:results[0].geometry.location.lat,
+                        address:results[0].formatted_address
                     };
                     onSuccess(location);
                 } else {
@@ -480,11 +481,11 @@ Swoosh.GoogleMaps = (function ($) {
                 }
             });
         },
-        reverseGeocode: function (latitude, longitude, onSuccess, onError) {
+        reverseGeocode:function (latitude, longitude, onSuccess, onError) {
             var latLong = new google.maps.LatLng(latitude, longitude);
             var geoCoder = new google.maps.Geocoder();
             geoCoder.geocode({
-                'latLng': latLong
+                'latLng':latLong
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     if (results[4]) {
@@ -500,7 +501,7 @@ Swoosh.GoogleMaps = (function ($) {
 
 Swoosh.PushNotification = (function ($) {
     return {
-        show: function (message) {
+        show:function (message) {
             Swoosh.Common.alert(message);
         }
     };
@@ -508,32 +509,32 @@ Swoosh.PushNotification = (function ($) {
 
 Swoosh.GCM = (function ($) {
     return {
-        gcmDeviceId: null,
-        registerSuccess: function (obj) {
+        gcmDeviceId:null,
+        registerSuccess:function (obj) {
             console.log('Successfully registered. Waiting for GCM callback: ' + JSON.stringify(obj));
         },
-        registerError: function (error) {
+        registerError:function (error) {
             console.log('Error in register: ' + JSON.stringify(error));
             navigator.splashscreen.hide();
         },
-        register: function () {
+        register:function () {
             window.GCM.register("237121290143",
                 Swoosh.GCM.registerSuccess,
                 Swoosh.GCM.registerError);
         },
-        unRegisterSuccess: function (obj) {
+        unRegisterSuccess:function (obj) {
             console.log('Successfully unregistered. Waiting for GCM callback: ' + JSON.stringify(obj));
         },
-        unRegisterError: function (error) {
+        unRegisterError:function (error) {
             console.log('Error in unregister: ' + JSON.stringify(error));
         },
-        unRegister: function () {
+        unRegister:function () {
             Swoosh.Device.remove();
             window.GCM.unregister("237121290143",
                 Swoosh.GCM.unRegisterSuccess,
                 Swoosh.GCM.unRegisterError);
         },
-        callback: function (e) {
+        callback:function (e) {
             console.log('GCM Event Received: ' + e.event);
             switch (e.event) {
                 case 'registered':
@@ -565,14 +566,24 @@ Swoosh.GCM = (function ($) {
 
 Swoosh.Navigation = (function ($) {
     return {
-        noBarCodeButton: function () {
+        noBarCodeButton:function () {
             $.mobile.changePage($('#lossDetail'));
         },
-        lossDetailForward: function () {
-            $.mobile.changePage($('#addPhoto'));
+        lossDetailForward:function () {
+            if (Swoosh.Capture.Image.getImages().length) {
+                $.mobile.changePage($('#thumbnailImage'));
+            } else {
+                $.mobile.changePage($('#addPhoto'));
+            }
         },
-        addPhotoBack: function () {
+        addPhotoBack:function () {
             $.mobile.changePage($('#lossDetail'));
+        },
+        thumbnailImageBack:function () {
+            $.mobile.changePage($('#lossDetail'));
+        },
+        thumbnailImageForward:function () {
+            $.mobile.changePage($('#addAudio'));
         }
     };
 }(jQuery));
@@ -587,24 +598,24 @@ $(document).ready(function () {
     $(document).on('deviceready', Swoosh.Home.deviceReady);
 
     /* OLD STUFF
-   $(document).on('click', '#CurrentLocation', Swoosh.Home.currentLocationClick);
-   $(document).on('click', '#GetSpeedAndLocation', Swoosh.Home.getSpeedAndLocation);
-   $(document).on('click', '#GetAcceleration', Swoosh.Home.getCurrentAcceleration);
+     $(document).on('click', '#CurrentLocation', Swoosh.Home.currentLocationClick);
+     $(document).on('click', '#GetSpeedAndLocation', Swoosh.Home.getSpeedAndLocation);
+     $(document).on('click', '#GetAcceleration', Swoosh.Home.getCurrentAcceleration);
 
-   $(document).on('click', '#PlotSpecificLocationButton', Swoosh.LocationDialog.plotSpecificLocationClick);
+     $(document).on('click', '#PlotSpecificLocationButton', Swoosh.LocationDialog.plotSpecificLocationClick);
 
-   $(document).on('click', '#startWatchButton', Swoosh.AccelerationDialog.watchAcceleration);
-   $(document).on('click', '#clearWatchButton', Swoosh.Accelerometer.clearWatch);
+     $(document).on('click', '#startWatchButton', Swoosh.AccelerationDialog.watchAcceleration);
+     $(document).on('click', '#clearWatchButton', Swoosh.Accelerometer.clearWatch);
 
-   $(document).on('click', '#FromLibraryButton', Swoosh.GetPhotoDialog.fromLibrary);
-   $(document).on('click', '#FromCameraButton', Swoosh.GetPhotoDialog.fromCamera);
+     $(document).on('click', '#FromLibraryButton', Swoosh.GetPhotoDialog.fromLibrary);
+     $(document).on('click', '#FromCameraButton', Swoosh.GetPhotoDialog.fromCamera);
 
-   $(document).on('click', '#ShowPhotoCancelButton', Swoosh.ShowPhotoDialog.close);
+     $(document).on('click', '#ShowPhotoCancelButton', Swoosh.ShowPhotoDialog.close);
 
-   $(document).on('click', '#CaptureAudioButton', Swoosh.Capture.captureAudio);
+     $(document).on('click', '#CaptureAudioButton', Swoosh.Capture.captureAudio);
 
-   $(document).on('click', '#UnregisterGCMButton', Swoosh.GCM.unRegister);
-   */
+     $(document).on('click', '#UnregisterGCMButton', Swoosh.GCM.unRegister);
+     */
 
     $(document).on('click', '#ScanButton', Swoosh.QRCodeScanner.scan);
     $(document).on('click', '#noBarCodeButton', Swoosh.Navigation.noBarCodeButton);
@@ -616,6 +627,9 @@ $(document).ready(function () {
     $(document).on('click', '#addImageButton', Swoosh.Capture.Image.capturePhoto);
 
     $(document).on('click', '#AddAudioButton', Swoosh.Capture.captureAudio);
+
+    $(document).on('click', '#thumbnailImageBack', Swoosh.Navigation.thumbnailImageBack);
+    $(document).on('click', '#thumbnailImageForward', Swoosh.Navigation.thumbnailImageForward);
 });
 
 $(document).delegate('#page_name', 'pageshow', function () {

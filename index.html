@@ -49,24 +49,35 @@
             <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
         </h3>
     </div>
-
     <div data-role="content" style="padding: 15px">
         <div id="scannedData">
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+        </div>
+        <div data-role="navigation">
+            <div class="forwardButton">
+                <a id="lossDetailForward">
+                    <img src="css/images/forward.png"/>
+                </a>
+            </div>
         </div>
     </div>
-
-    <div data-role="navigation">
-        <div class="forwardButton">
-            <a id="lossDetailForward">
-                <img src="css/images/forward.png"/>
-            </a>
-        </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>© Hackers in CTS
+        </h5>
     </div>
-</div>
-<div data-theme="a" data-role="footer" data-position="fixed">
-    <h5>© Hackers in CTS
-    </h5>
-</div>
 </div>
 <!-- /page -->
 
@@ -104,24 +115,37 @@
         </h5>
     </div>
 </div>
-<!-- /page -->
+
 
 <!-- Image thumbnail page -->
 <div data-role="page" id="thumbnailImage">
+    <div class="swooshLogo" data-theme="a" data-role="header" data-position="fixed">
+        <h3>
+            <img src="css/images/swoosh.png"/>
+            <span>Swoosh&#160;&#160;&#160;&#160;&#160;&#160;</span>
+        </h3>
+    </div>
     <div data-role="content">
         <div class="ui-grid-a" id="thumbnailContainer">
         </div>
-        <a data-role="button" data-inline="true" id="addImageButton" style="position: absolute; bottom: 1px;">Add Image
+        <a data-role="button" data-inline="true" id="addImageButton"
+           style="position: absolute; bottom: 1px;">Add Image
         </a>
     </div>
 
     <!-- Image preview -->
     <div data-role="popup" id="imagePreview" data-overlay-theme="a" data-theme="d" data-corners="false">
-        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete" data-iconpos="notext"
+        <a href="#" data-rel="back" data-role="button" data-theme="a" data-icon="delete"
+           data-iconpos="notext"
            class="ui-btn-right">Close</a>
         <img class="popphoto">
     </div>
+    <div data-theme="a" data-role="footer" data-position="fixed">
+        <h5>© Hackers in CTS
+        </h5>
+    </div>
 </div>
+
 
 <!-- Start of addPhoto page -->
 <div data-role="page" id="addAudio">
@@ -152,6 +176,7 @@
             </div>
         </div>
     </div>
+
     <div data-theme="a" data-role="footer" data-position="fixed">
         <h5>© Hackers in CTS
         </h5>
